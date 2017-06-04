@@ -127,7 +127,7 @@ commands
 - Smaller user community (as of now)
 - Under active development (must keep up with new changes) 
 
-## Installation
+### Installation
 Here we will install the latest tagged release from [GitHub](https://github.com/singularityware/singularity).
 If you prefer to install a different version or to install Singularity in a 
 different location, see these [Singularity docs](http://singularity.lbl.gov/docs-quick-start-installation).
