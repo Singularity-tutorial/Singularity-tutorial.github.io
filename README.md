@@ -127,12 +127,102 @@ commands
 - Smaller user community (as of now)
 - Under active development (must keep up with new changes) 
 
-### Philosophy of Docker and of Singularity 
+## Installation
+Here we will install the latest tagged release from [GitHub](https://github.com/singularityware/singularity).
+If you prefer to install a different version or to install Singularity in a 
+different location, see these [Singularity docs](http://singularity.lbl.gov/docs-quick-start-installation).
 
+We're going to compile Singularity from source code.  First we'll need to make
+sure we have some development tools installed so that we can do that.  On 
+Ubuntu, run these commands to make sure you have all the necessary packages 
+installed.
 
+```
+$ sudo apt-get update 
 
+$ sudo apt-get install python dh-autoreconf build-essential debootstrap
+```
 
+On CentOS, these commmands should get you up to speed.
 
+```
+$ sudo yum update 
+
+$ sudo yum groupinstall 'Development Tools'
+
+$ sudo yum install wget epel-release
+
+$ sudo yum install debootstrap.noarch
+```
+
+Next we'll download a compressed archive of the source code (using the the 
+`wget` command). Then we'll extract the source code from the archive (with the 
+`tar` command).
+
+```
+$ wget https://github.com/singularityware/singularity/releases/download/2.3/singularity-2.3.tar.gz
+
+$ tar xvf singularity-2.3.tar.gz
+```
+
+Finally it's time to build and install!
+
+```
+$ cd singularity-2.3
+
+$ ./configure --prefix=/usr/local
+
+$ make 
+
+$ sudo make install
+```
+
+If everything went according to plan, you now have a working installation of 
+Singularity.  You can test your installation like so:
+
+```
+$ singularity run docker://godlovedc/lolcow
+```
+
+You should see something like the following.
+
+```console 
+Script started on Sun Jun  4 14:56:42 2017
+]0;godlovedc@felix:~/versioned/Singularity-Tutorial[?1034h]0;~/versioned/Singularity-Tutorial
+[40m[32m02:56 PM [40m]0;~/versioned/Singularity-Tutorial
+[40m[33mgodlovedc[40m[32m@felix:[33m~/versioned/Singularity-Tutorial[0m
+$ singularity shell      ru   run docker://godlovedc/lolcow
+Docker image path: index.docker.io/godlovedc/lolcow:latest
+Cache folder set to /home/godlovedc/.singularity/docker
+Creating container runtime...
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = "en_US",
+	LC_ALL = (unset),
+	LC_TIME = "C",
+	LC_CTYPE = "en_US",
+	LC_COLLATE = "C",
+	LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+[38;5;129m [0m[38;5;129m_[0m[38;5;129m_[0m[38;5;129m_[0m[38;5;93m_[0m[38;5;93m_[0m[38;5;93m_[0m[38;5;93m_[0m[38;5;93m_[0m[38;5;93m_[0m[38;5;93m_[0m[38;5;93m_[0m[38;5;93m_[0m[38;5;99m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;63m_[0m[38;5;69m_[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;39m_[0m[38;5;39m_[0m[38;5;39m_[0m[38;5;39m_[0m
+[38;5;129m/[0m[38;5;93m [0m[38;5;93mY[0m[38;5;93mo[0m[38;5;93mu[0m[38;5;93m [0m[38;5;93ma[0m[38;5;93mr[0m[38;5;93me[0m[38;5;93m [0m[38;5;99mo[0m[38;5;63mn[0m[38;5;63ml[0m[38;5;63my[0m[38;5;63m [0m[38;5;63my[0m[38;5;63mo[0m[38;5;63mu[0m[38;5;63mn[0m[38;5;63mg[0m[38;5;63m [0m[38;5;63mo[0m[38;5;69mn[0m[38;5;33mc[0m[38;5;33me[0m[38;5;33m,[0m[38;5;33m [0m[38;5;33mb[0m[38;5;33mu[0m[38;5;33mt[0m[38;5;33m [0m[38;5;33my[0m[38;5;39mo[0m[38;5;39mu[0m[38;5;39m [0m[38;5;39mc[0m[38;5;39ma[0m[38;5;39mn[0m[38;5;39m [0m[38;5;39m\[0m
+[38;5;93m\[0m[38;5;93m [0m[38;5;93ms[0m[38;5;93mt[0m[38;5;93ma[0m[38;5;93my[0m[38;5;93m [0m[38;5;99mi[0m[38;5;63mm[0m[38;5;63mm[0m[38;5;63ma[0m[38;5;63mt[0m[38;5;63mu[0m[38;5;63mr[0m[38;5;63me[0m[38;5;63m [0m[38;5;63mi[0m[38;5;63mn[0m[38;5;63md[0m[38;5;69me[0m[38;5;33mf[0m[38;5;33mi[0m[38;5;33mn[0m[38;5;33mi[0m[38;5;33mt[0m[38;5;33me[0m[38;5;33ml[0m[38;5;33my[0m[38;5;33m.[0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;38m [0m[38;5;38m/[0m
+[38;5;93m [0m[38;5;93m-[0m[38;5;93m-[0m[38;5;93m-[0m[38;5;99m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;63m-[0m[38;5;69m-[0m[38;5;33m-[0m[38;5;33m-[0m[38;5;33m-[0m[38;5;33m-[0m[38;5;33m-[0m[38;5;33m-[0m[38;5;33m-[0m[38;5;33m-[0m[38;5;33m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;38m-[0m[38;5;38m-[0m[38;5;44m-[0m[38;5;44m-[0m
+[38;5;93m [0m[38;5;99m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m\[0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m^[0m[38;5;69m_[0m[38;5;33m_[0m[38;5;33m^[0m
+[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m\[0m[38;5;69m [0m[38;5;33m [0m[38;5;33m([0m[38;5;33mo[0m[38;5;33mo[0m[38;5;33m)[0m[38;5;33m\[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;33m_[0m[38;5;39m_[0m[38;5;39m_[0m[38;5;39m_[0m[38;5;39m_[0m
+[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;69m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m([0m[38;5;33m_[0m[38;5;33m_[0m[38;5;33m)[0m[38;5;33m\[0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m)[0m[38;5;39m\[0m[38;5;38m/[0m[38;5;38m\[0m
+[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;63m [0m[38;5;69m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m|[0m[38;5;39m|[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39m-[0m[38;5;39mw[0m[38;5;38m [0m[38;5;38m|[0m
+[38;5;63m [0m[38;5;69m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;33m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m [0m[38;5;39m|[0m[38;5;39m|[0m[38;5;39m [0m[38;5;39m [0m[38;5;38m [0m[38;5;38m [0m[38;5;44m [0m[38;5;44m|[0m[38;5;44m|[0m
+]0;godlovedc@felix:~/versioned/Singularity-Tutorial]0;~/versioned/Singularity-Tutorial
+[40m[32m02:57 PM [40m]0;~/versioned/Singularity-Tutorial
+[40m[33mgodlovedc[40m[32m@felix:[33m~/versioned/Singularity-Tutorial[0m
+$ exit
+exit
+
+Script done on Sun Jun  4 14:57:36 2017
+
+```
 
 
 
