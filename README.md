@@ -127,7 +127,10 @@ commands
 - Smaller user community (as of now)
 - Under active development (must keep up with new changes) 
 
-### Installation
+Singularity shines for scientific software running in an HPC environent.  We 
+will use it for the remainder of the class.
+
+### Install
 Here we will install the latest tagged release from [GitHub](https://github.com/singularityware/singularity).
 If you prefer to install a different version or to install Singularity in a 
 different location, see these [Singularity docs](http://singularity.lbl.gov/docs-quick-start-installation).
@@ -209,6 +212,7 @@ This command downloads and runs a container from [Docker Hub]().  During the
 next hour we will learn how to build a similar container from scratch.  
 
 
+# Hour 2 (Building and Running Containers)
 
 
 
