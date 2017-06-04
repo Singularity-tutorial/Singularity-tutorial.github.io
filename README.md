@@ -1,5 +1,5 @@
 # <b>Creating and running software containers with Singularity</b>
-<i>How to use [Singularity](http://singularity.lbl.gov)! </i>
+### <i>How to use [Singularity](http://singularity.lbl.gov)! </i>
 
 This is an introductory class taught by David Godlove at the 
 [NIH HPC](https://hpc.nih.gov/).  For more information about the topics covered 
