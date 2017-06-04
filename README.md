@@ -186,7 +186,7 @@ $ singularity run docker://godlovedc/lolcow
 
 You should see something like the following.
 
-```sh-session
+```shellsession
 Script started on Sun Jun  4 14:56:42 2017
 ]0;godlovedc@felix:~/versioned/Singularity-Tutorial[?1034h]0;~/versioned/Singularity-Tutorial
 [40m[32m02:56 PM [40m]0;~/versioned/Singularity-Tutorial
