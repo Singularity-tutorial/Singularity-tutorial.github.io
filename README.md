@@ -1,4 +1,4 @@
-#<b>Creating and running software containers with Singularity</b>
+# <b>Creating and running software containers with Singularity</b>
 How to use [Singularity](http://singularity.lbl.gov))! 
 
 This is an introductory class taught by David Godlove at the 
