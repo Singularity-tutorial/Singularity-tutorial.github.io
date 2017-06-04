@@ -212,7 +212,7 @@ This command downloads and runs a container from [Docker Hub]().  During the
 next hour we will learn how to build a similar container from scratch.  
 
 
-# Hour 2 (Building and Running Containers)
+## Hour 2 (Building and Running Containers)
 
 
 
