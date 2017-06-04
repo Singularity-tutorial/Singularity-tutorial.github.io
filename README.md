@@ -1,5 +1,5 @@
 # <b>Creating and running software containers with Singularity</b>
-How to use [Singularity](http://singularity.lbl.gov))! 
+<i>How to use [Singularity](http://singularity.lbl.gov)! </i>
 
 This is an introductory class taught by David Godlove at the 
 [NIH HPC](https://hpc.nih.gov/).  For more information about the topics covered 
@@ -77,6 +77,13 @@ Docker is currently the most popular and widely used container software.  It
 has several strengths and weaknesses that make it a good choice for some 
 projects but not for others.
 
+<b>philosophy</b>
+Docker is built for running multiple containers on a single system and it 
+allows containers to share common software features for efficiency.  It also 
+seeks to fully isolate each container from all other containers and from the 
+host system.Docker assumes that you will be a root user.  Or that it will be OK 
+for you to elevate your privileges if you are not a root user.    
+
 <b>strengths</b>
 - Mature software with a large user community
 - Docker Hub!
@@ -99,6 +106,13 @@ Singularity is a relatively new container software developed by Greg Kurtzer at
 Lawrence Berkley National labs.  It was developed with scientific software and
 HPC systems in mind.  
 
+<b>philosophy</b>
+Singularity assumes that each application will have it's own container.  It 
+does not seek to fully isolate containers from one aother or the host system.
+Singularity assumes that you will have a build system where you are the root 
+user, but that you will also have a production system where you may or may not
+be the root user and which may or may not be separate from you build system.
+
 <b>strengths</b>
 - Easy to learn and use (relatively speaking)
 - Approved for HPC (installed on Biowulf)
@@ -114,12 +128,6 @@ commands
 - Under active development (must keep up with new changes) 
 
 ### Philosophy of Docker and of Singularity 
-- Docker assumes you will be a root user.  Or that it will be OK for you to
-elevate your privileges if you are not a root user.
-- Singularity assumes that you will have a build system where you are the root 
-user, but that you will also have a production system where you may or may not
-be the root user and which may or may not be separate from you build system.
-
 
 
 
