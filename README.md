@@ -214,7 +214,73 @@ next hour we will learn how to build a similar container from scratch.
 
 ## Hour 2 (Building and Running Containers)
 
+In the second hour we will build the preceding container from scratch. Simply
+typing `singularity` will give you an summary of all the commands you can use.
+Typing `singularity help <command>` will give you more detailed information 
+about running an indvidual command.
+
+To build a singularity container, you must issue 2 commands.  First you must 
+`create` an empty container.  Then you must `bootstrap` an OS and any apps into 
+the empty container.  
+
+First, let's create an empty Singularity container.  
+
+```
+$ cd ~
+
+$ singularity create lolcow.img
+```
+
+By default, singularity creates a container with 768MB in size.  You can change
+this default with the `--size` option.
+
+Now that we have an empty singularity container, we need to use `bootstrap` to
+install an OS.  To use the bootstrap command, we need a <b>definition file</b>.
+A definition file is like a set of blueprints telling Singularity what software
+to install in the container.
 
 
+The source code that we installed using `wget` contains several example
+definition files in `singularity-2.3/examples`.  Let's copy the ubuntu example
+to our home directory and inspect it.
+
+```
+$ cp singularity-2.3/examples/ubuntu/Singularity .
+
+$ nano Singularity
+```
+
+It should look something like this:
+
+```
+BootStrap: debootstrap
+OSVersion: trusty
+MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
 
+%runscript
+    echo "This is what happens when you run the container..."
+
+
+%post
+    echo "Hello from inside the container"
+    sed -i 's/$/ universe/' /etc/apt/sources.list
+    apt-get -y --force-yes install vim
+
+```
+
+See the [Singularity docs](http://singularity.lbl.gov/bootstrap-image) for an 
+explanation of each of these sections.
+
+Now let's rename this file so we don't get confused and use it to bootstrap our
+lolcow.img container. Note that the bootstrap command requires `sudo` 
+privileges.
+
+```
+$ mv Singularity lolcow.def
+
+$ sudo singularity bootstrap lolcow.img lolcow.def
+```
+
+This should take a few minutes while all of the components of an OS are
+downloaded and installed.
