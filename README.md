@@ -219,6 +219,8 @@ typing `singularity` will give you an summary of all the commands you can use.
 Typing `singularity help <command>` will give you more detailed information 
 about running an indvidual command.
 
+### Building a basic container
+
 To build a singularity container, you must issue 2 commands.  First you must 
 `create` an empty container.  Then you must `bootstrap` an OS and any apps into 
 the empty container.  
@@ -283,4 +285,73 @@ $ sudo singularity bootstrap lolcow.img lolcow.def
 ```
 
 This should take a few minutes while all of the components of an OS are
-downloaded and installed.
+downloaded and installed.  When the bootstrap finishes you will have a basic
+Ubuntu container.
+
+### Using `shell` to explore and modify containers
+
+Now let's enter our new container and look around.  
+
+```
+$ singularity shell lolcow.img
+```
+
+Depending on the environment on your host system you may see your prompt 
+change. Let's look at what OS is running inside the container.
+
+```
+$ cat /etc/os-release
+NAME="Ubuntu"
+VERSION="14.04, Trusty Tahr"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 14.04 LTS"
+VERSION_ID="14.04"
+HOME_URL="http://www.ubuntu.com/"
+SUPPORT_URL="http://help.ubuntu.com/"
+BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
+```
+
+No matter what OS is running on your host, your container is running Ubuntu
+14.04.  Let's try installing some software.
+
+```
+$ sudo apt-get update && sudo apt-get install fortune cowsay lolcat
+bash: sudo: command not found
+```
+
+Singularity complains that it can't find the sudo command.  It is really 
+complaining that it can't elevate your priveleges within the container.  This 
+is an important concept in Singularity.  If you enter a container without root
+priveleges, you are unable to obtain root priveleges within the container.
+
+Let's exit the container and re-enter as root.
+
+```
+$ exit
+
+$ sudo singularity shell --writable lolcow.img
+```
+
+Now we are the root user inside the container. Not also the addition of the 
+`--writable` option.  By default Singularity containers are mounted as
+read-only.  Adding the `--writable` option enables us to change our container.
+
+Let's try installing some software again.
+
+```
+$ apt-get update && apt-get install fortune cowsay lolcat
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
