@@ -343,6 +343,312 @@ Let's try installing some software again.
 $ apt-get update && apt-get install fortune cowsay lolcat
 ```
 
+### Blurring the line between the container and the host system.
+
+Singularity does not try to isolate your container completely from the host 
+system.  This allows you to do some interesting things.
+
+Using the exec command, we can run commands within the container from the host
+system.  
+
+```
+$ singularity exec lolcow.img cowsay 'How did you get out of the container?'
+```
+
+In this example, singularity entered the container, ran the `cowsay` command, 
+and then displayed the standard output on our host system terminal. 
+
+You can also use pipes and redirection to blur the lines between the container 
+and the host system.  
+
+```
+$ singularity exec lolcow.img cowsay moo > cowsaid
+
+$ cat cowsaid
+```
+
+We created a file called `cowsaid` in the current working directory with the
+output of a command that was executed within the container. 
+
+We can also pipe things into the container.
+
+```
+$ cat cowsaid | singularity exec lolcow.img cowsay
+```
+
+We've created a meta-cow (a cow that talks about cows). ;-P
+
+## Hour 3 (advanced Singularity usage)
+
+### Making containerized apps behave more like normal apps
+
+Let's consider an extended example
+to demonstrate how Singularity could be used to implement a program that takes
+input and produces output. This is a very common situation.  
+
+
+Let's imagine that we want to use out lolcow.img to "analyze data".  We should
+give our container an input file, it should reformat it (in the form of a cow
+speaking), and it should dump the text into an output file.  Although this is 
+a silly example, it obviously demonstrates a very common situation.  Here is 
+one way that we could make our container accept a file as input and produce
+another file as output.
+
+```
+$ singularity exec lolcow.img cowsay $(cat jawa.sez) > output
+
+$ ls
+
+$ cat output
+```
+
+The `$(some command)` syntax above simply captures the output of the command 
+and treats it as though it were a plain old text argument.  
+
+Although this works, it is a lot to remember.  One interesting singularity
+trick is to make a container function as though it were an executable.  To do 
+that, we need to create a runscript inside the container. It turns out that our
+lolcat.def file already builds a runscript into our container for us.
+
+```
+./lolcow.img
+```
+
+Let's rewrite this runscript so that the container runs our cowsay analysis.
+
+
+```
+```
+
+Now we can call the lolcow.img as though it were an executable, and simply give 
+it two arguments.  One for input and one for output.  
+
+```
+$ ./lolcow.img jawa.sez output2
+
+$ cat output2
+```
+
+### Bind mounting host system directories into a container.
+
+It's also possible to create and modify files on the host system from within
+the container. In fact, that's exactly what we did in the previous example when
+we created output files in our home directory using the `singularity exec` 
+command.  
+
+To be more concrete, consider this example. 
+
+```
+$ singularity shell lolcow.img
+
+$ cat wutini > ~/jawa.sez
+
+$ ls
+
+$ cat ~/jawa.sez
+
+$ exit
+
+$ ls
+
+$ cat ~/jawa.sez
+```
+
+Here we shelled into a container and created a file with some text in our home
+directory.  Even after we exited the container, the file still existed.
+
+There are several special directories that Singularity <i>bind mounts</i> into
+your container by default.  These include:
+
+- ~
+- /tmp
+- /proc
+- /sys
+- /
+
+You can specify other directories to bind too using the `--bind` command or the 
+environmental variable `$SINGULARITY_BIND_PATH`
+
+Let's say we want to use our `conwsay.img` container to analyze data and write 
+output to a different directory.  For this example, we first need to create a 
+new directory with some data on our host system.  
+
+```
+$ sudo mkdir /data
+
+$ sudo chown $USER:$USER /data
+
+$ cat 'I am your father' > /data/vador.sez
+```
+
+We also need to make a directory within our container where we can bind mount
+the system directory.
+
+```
+$ sudo singularity exec --writable lolcow.img mkdir /data
+```
+
+Now let's see how that works.  First, let's list the contents of `/data`
+within the container without bind mounting.
+
+```
+$ singularity exec lolcow.img ls /data
+```
+
+The `/data` directory within the container is empty.  Now let's repeat the same
+command but using the `--bind` option.
+
+```
+$ singularity exec --bind /data lolcow.img ls /data
+```
+
+Now the `/data` directory in the container is bind mounted to the `/data` 
+directory on the host system and we can see it's contents.  
+
+Now what about our earlier example in which we used a runscript to run a our
+container as though it were an executable?  The `singularity run` command 
+accepts the `--bind` option and can execute our runscript like so.
+
+```
+$ singularity run --bind /data lolcow.img /data/vador.sez /data/output3
+```
+
+But that's a cumbersome command.  Instead, we could set the variable 
+`$SINGULARITY_BINDPATH` and then use our container as before.
+
+```
+$ export SINGULARITY_BINDPATH=/data
+
+$ ./lolcow.img /data/output3 /data/metacow
+
+$ cat /data/metacow
+```
+
+### Singularity Hub and Docker Hub
+
+We've spent a lot of time on building and using your own containers to
+demonstrate how Singularity works.  But there's an easier way! [Docker Hub]()
+hosts over 100,000 pre-built, ready-to-use containers.  And singularity makes
+it easy to use them.
+
+When we first installed Singularity we tested the installation by running a
+container from Docker Hub like so.
+
+```
+$ singularity run docker://godlovedc/lolcow
+```
+
+Instead of running this container from Docker Hub, we could also just copy it 
+to our local system with the `pull` command.
+
+```
+$ singularity pull docker://godlovedc/lolcow
+
+$ ls
+
+$ ./lolcow
+```
+
+You can build and host your own images on Docker Hub, (using docker) or you can
+download and run images that others have built.
+
+```
+$ singularity shell docker://tensorflow/tensorflow:latest-gpu
+
+python
+
+import tensorflow as tf
+
+quit()
+
+exit
+```
+
+If you don't want to learn how to write Docker files (definition files for 
+Docker) you can also use [Singularity Hub]() to build and host container 
+images.  
+
+Both Docker Hub and Singularity Hub link to your GitHub account. New container
+builds are automatically triggered every time you push changes to a Docker file
+or a Singularity definition file in a linked repository.  
+
+### Miscellaneous topics 
+
+<b>pipes and redirection</b>
+
+As we demonstrated earlier, pipes and redirects work as expected between a 
+container and host system.  If you need to pipe the output of one command in 
+your container to another command in your container things may be more 
+complicated.
+
+```
+$ singularity exec lolcow.img fortune | singularity exec lolcow.img cowsay
+```
+
+<b>X11 and OpenGL</b>
+
+You can use Singularity containers to display graphics through common 
+protocols. To do this, you need to install the proper graphics stack within
+the Singularity container.  For instance if you want to display X11 graphics
+you must install `xorg` within your container.  In an Ubuntu container the
+command would look like this.  
+
+```
+$ apt-get install xorg
+```
+
+<b>GPU computing</b>
+
+In Singularity v2.2 it was necessary to install graphics card drivers into the 
+container to use GPU hardware for CUDA.  (See the [gpu4singularity script]() on
+GitHub for details.)  This is no longer necessary in v2.3.  In v2.3 the 
+experimental --nv option will look for NVIDIA libraries on the host system and
+automatically bind mount them to the container so that GPUs work seamlessly. 
+
+<b>host system ports</b> 
+
+Network ports on the host system are accessible from within the container and 
+work seamlessly.  For example, you could install ipython within a container,
+start a jupyter notebook instance, and then connect to that instance using a 
+browser running outside of the container on the host system or from another
+host.  
+
+<b>a note on SUID programs and daemons</b>
+
+Some programs need root privileges to run.  These often include services or 
+daemons that start via the `init.d` or `system.d` systems and run in the
+background.  For instance, `sshd` the ssh daemon that listens on port 22 and 
+allows another user to connect to your computer requires root privileges.  You
+will not be able to run it in a container unless you call the container as root.
+
+Other programs may set the SUID bit and run as root without your knowledge.  
+For instance, the well-known `ping` program actually runs as root (and needs to
+since it sets up a raw network socket).  This program will not run in a 
+container unless you are root in the container.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
