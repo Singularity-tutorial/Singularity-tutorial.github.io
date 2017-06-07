@@ -765,7 +765,7 @@ $ cat /data/metacow2
 ### Singularity Hub and Docker Hub
 
 We've spent a lot of time on building and using your own containers to
-demonstrate how Singularity works.  But there's an easier way! [Docker Hub]()
+demonstrate how Singularity works.  But there's an easier way! [Docker Hub](https://hub.docker.com/)
 hosts over 100,000 pre-built, ready-to-use containers.  And singularity makes
 it easy to use them.
 
