@@ -281,7 +281,7 @@ See the [Singularity docs](http://singularity.lbl.gov/bootstrap-image) for an
 explanation of each of these sections.
 
 Now let's rename this file so we don't get confused and use it to bootstrap our
-lolcow.img container. Note that the bootstrap command requires `sudo` 
+`lolcow.img` container. Note that the bootstrap command requires `sudo` 
 privileges.
 
 ```
@@ -319,17 +319,22 @@ BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
 ```
 
 No matter what OS is running on your host, your container is running Ubuntu
-14.04.  Let's try installing some software.
+14.04!
+
+Let's try installing some software. I used the programs `fortune`, `cowsay`, 
+and `lolcat` to produce the container that we saw in the first demo.
 
 ```
 $ sudo apt-get update && sudo apt-get install fortune cowsay lolcat
 bash: sudo: command not found
 ```
 
+Whoops!
+
 Singularity complains that it can't find the sudo command.  It is really 
-complaining that it can't elevate your priveleges within the container.  This 
+complaining that it can't elevate your privileges within the container.  This 
 is an important concept in Singularity.  If you enter a container without root
-priveleges, you are unable to obtain root priveleges within the container.
+privileges, you are unable to obtain root privileges within the container.
 
 Let's exit the container and re-enter as root.
 
@@ -339,14 +344,114 @@ $ exit
 $ sudo singularity shell --writable lolcow.img
 ```
 
-Now we are the root user inside the container. Not also the addition of the 
+Now we are the root user inside the container. Note also the addition of the 
 `--writable` option.  By default Singularity containers are mounted as
-read-only.  Adding the `--writable` option enables us to change our container.
+read-only.  Adding the `--writable` option enables us to write to our container.
 
 Let's try installing some software again.
 
 ```
 $ apt-get update && apt-get install fortune cowsay lolcat
+```
+
+Now you should see the programs successfully installed.  Let's try running the
+demo in this new container.
+
+```
+$ fortune | cowsay | lolcat
+bash: lolcat: command not found
+bash: cowsay: command not found
+bash: fortune: command not found
+```
+
+Drat! It looks like the programs were not added to our `$PATH`.  Let's add
+them and try again.
+
+```
+$ export PATH=/usr/games:$PATH
+
+$ fortune | cowsay | lolcat
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+        LANGUAGE = (unset),
+        LC_ALL = (unset),
+        LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+ ________________________________________
+/ Keep emotionally active. Cater to your \
+\ favorite neurosis.                     /
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+We're making progress, but we are now receiving a warning from perl.  But 
+before we tackle that, let's think some more about the `$PATH` variable.
+
+We changed our path in this session, but those changes will disappear as soon
+as we exit the container.  It Singularity 2.2 it was possible to add text to a
+file called `/environment` in your container so that variable changes like this
+would persist.  In Singularity 2.3 things are a bit more hidden and you would 
+need to edit a file called `/.singularity.d/env/90-environment.sh` to make this
+variable change persistent like so:
+
+```
+$ echo 'export PATH=/usr/games:$PATH' >> /.singularity.d/env/90-environment.sh
+```
+
+But files in the `/.singularity.d` meta data directory aren't really meant to
+be edited by hand.  Instead we should make this change in the definition file
+and re-bootstrap the container.  We'll do that in a minute.
+
+Now back to our perl warning.  Perl is complaining that the locale is not set
+properly.  Basically, perl wants to know where you are and what sort of
+language encoding it should use.  Should you encounter this warning you can 
+probably fix it with the `locale-gen` command or by setting `LC_ALL=C`.  Here
+we'll use `locale-gen`.
+
+```
+$ locale-gen en_US.UTF-8
+Generating locales...
+  en_US.UTF-8... done
+Generation complete.
+
+$ fortune | cowsay | lolcat
+ _________________________________________
+/ FORTUNE PROVIDES QUESTIONS FOR THE      \
+| GREAT ANSWERS: #19 A: To be or not to   |
+\ be. Q: What is the square root of 4b^2? /
+ -----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+Great!  Things are working properly now.  
+
+Although it is fine to shell into your Singularity container and make changes
+while you are debugging, you ultimately what all of these changes to be
+reflected in your definition file.  Otherwise if you mess your container up 
+and need to rebuild it from scratch you will forget all of the changes you 
+made.
+
+Let's update our definition file with the changes we made to this container.
+
+```
+$ exit
+
+$ nano lolcow.def
+```
+
+New lines are in <b>bold</b>.
+
+```
+<b>bold</b>
 ```
 
 ### Blurring the line between the container and the host system.
