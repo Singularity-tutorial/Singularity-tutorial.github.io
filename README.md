@@ -448,10 +448,28 @@ $ exit
 $ nano lolcow.def
 ```
 
-New lines are in <b>bold</b>.
+Here is what our updated definition file should look like.
 
 ```
-<b>bold</b>
+BootStrap: debootstrap
+OSVersion: trusty
+MirrorURL: http://us.archive.ubuntu.com/ubuntu/
+
+
+%runscript
+    echo "This is what happens when you run the container..."
+
+
+%post
+    echo "Hello from inside the container"
+    sed -i 's/$/ universe/' /etc/apt/sources.list
+    locale-gen en_US.UTF-8
+    apt-get -y update
+    apt-get -y --force-yes install vim fortune cowsay lolcat
+
+
+%environment
+    export PATH=/usr/games:$PATH
 ```
 
 ### Blurring the line between the container and the host system.
