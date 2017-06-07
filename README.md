@@ -482,6 +482,14 @@ system.
 
 ```
 $ singularity exec lolcow.img cowsay 'How did you get out of the container?'
+ _______________________________________
+< How did you get out of the container? >
+ ---------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 ```
 
 In this example, singularity entered the container, ran the `cowsay` command, 
@@ -494,18 +502,46 @@ and the host system.
 $ singularity exec lolcow.img cowsay moo > cowsaid
 
 $ cat cowsaid
+ _____
+< moo >
+ -----
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 ```
 
 We created a file called `cowsaid` in the current working directory with the
 output of a command that was executed within the container. 
 
-We can also pipe things into the container.
+We can also pipe things <i>into</i> the container.
 
 ```
 $ cat cowsaid | singularity exec lolcow.img cowsay
+ ________________
+/  _____ < moo > \
+|                |
+| -----          |
+|                |
+| \ ^__^         |
+|                |
+| \ (oo)\_______ |
+|                |
+| (__)\ )\/\     |
+|                |
+| ||----w |      |
+|                |
+\ || ||          /
+ ----------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 ```
 
-We've created a meta-cow (a cow that talks about cows). ;-P
+We've created a meta-cow (a cow that talks about cows). :stuck_out_tongue_winking_eye:
 
 ## Hour 3 (advanced Singularity usage)
 
