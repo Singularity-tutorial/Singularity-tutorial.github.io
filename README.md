@@ -547,42 +547,77 @@ We've created a meta-cow (a cow that talks about cows). :stuck_out_tongue_winkin
 
 ### Making containerized apps behave more like normal apps
 
-Let's consider an extended example
-to demonstrate how Singularity could be used to implement a program that takes
-input and produces output. This is a very common situation.  
+In the third our we are going to consider an extended example describing a
+program that takes a file as input, analyzes the data in the file, and 
+produces another file as output.  This is obviously a very common situation.  
 
 
-Let's imagine that we want to use out lolcow.img to "analyze data".  We should
-give our container an input file, it should reformat it (in the form of a cow
-speaking), and it should dump the text into an output file.  Although this is 
-a silly example, it obviously demonstrates a very common situation.  Here is 
-one way that we could make our container accept a file as input and produce
-another file as output.
+Let's imagine that we want to use the cowsay program in our lolcow.img to 
+"analyze data".  We should give our container an input file, it should reformat 
+it (in the form of a cow speaking), and it should dump the output into another 
+file.  
+
+Here's an example.  First I'll make some "data"
 
 ```
-$ singularity exec lolcow.img cowsay $(cat jawa.sez) > output
+$ echo "The grass is always greener over the septic tank" > input
+```
 
-$ ls
+Now I'll "analyze" the "data"
+
+```
+$ cat input | singularity exec lolcow.img cowsay > output
 
 $ cat output
+ ______________________________________
+/ The grass is always greener over the \
+\ septic tank                          /
+ --------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 ```
 
-The `$(some command)` syntax above simply captures the output of the command 
-and treats it as though it were a plain old text argument.  
-
-Although this works, it is a lot to remember.  One interesting singularity
-trick is to make a container function as though it were an executable.  To do 
-that, we need to create a runscript inside the container. It turns out that our
-lolcat.def file already builds a runscript into our container for us.
+This <i>works</i> but the syntax is ugly and difficult to remember.  One 
+neat singularity trick is to make a container function as though it were an 
+executable.  To do that, we need to create a runscript inside the container. 
+It turns out that our lolcat.def file already builds a runscript into our 
+container for us...
 
 ```
-./lolcow.img
+$ ./lolcow.img
+This is what happens when you run the container...
 ```
 
-Let's rewrite this runscript so that the container runs our cowsay analysis.
-
+Let's rewrite this runscript in the definition file and rebuild our container
+so that it does something more useful.  
 
 ```
+BootStrap: debootstrap
+OSVersion: trusty
+MirrorURL: http://us.archive.ubuntu.com/ubuntu/
+
+
+%runscript
+    #!/bin/bash
+    if [ $# -ne 2 ]; then
+        echo "Please provide an input and an output file."
+        exit 1
+    fi
+    cat $1 | cowsay > $2
+
+%post
+    echo "Hello from inside the container"
+    sed -i 's/$/ universe/' /etc/apt/sources.list
+    locale-gen en_US.UTF-8
+    apt-get -y update
+    apt-get -y --force-yes install vim fortune cowsay lolcat
+
+
+%environment
+    export PATH=/usr/games:$PATH
 ```
 
 Now we can call the lolcow.img as though it were an executable, and simply give 
