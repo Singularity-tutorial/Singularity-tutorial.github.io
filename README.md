@@ -829,10 +829,10 @@ builds are automatically triggered every time you push changes to a Docker file
 or a Singularity definition file in a linked repository.  
 
 ### Bringing it all together! `rnaseq`
-This repo contains a directory called rnaseq_example.  In it is a definition 
+This repo contains a directory called [rnaseq_example](rnaseq_example).  In it is a [definition](rnaseq_example/rnaseq.def) 
 file that combines a great number of the concepts that we covered today.  
 
-There is also a script called build.sh that uses a few clever tricks not 
+There is also a script called [build.sh](rnaseq_example/build.sh) that uses a few clever tricks not 
 covered in this class.  First it builds a container in a host directory instead
 of using an image.  Then it measures the size of this directory and uses the
 `--import` command to dump the contents of the directory into an image of just
