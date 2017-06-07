@@ -640,7 +640,7 @@ $ cat output2
 
 Now our container behaves as though it's an executable that expects 2 arguments!
 
-### Bind mounting host system directories into a container.
+### Bind mounting host system directories into a container
 
 It's possible to create and modify files on the host system from within
 the container. In fact, that's exactly what we did in the previous example when
@@ -722,6 +722,16 @@ accepts the `--bind` option and can execute our runscript like so.
 
 ```
 $ singularity run --bind /data lolcow.img /data/vader.sez /data/output3
+
+$ cat output3
+ __________________
+< I am your father >
+ ------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 ```
 
 But that's a cumbersome command.  Instead, we could set the variable 
@@ -761,6 +771,9 @@ $ cat /data/metacow2
                 ||----w |
                 ||     ||
 ```
+
+For a lot more info on how to bind mount host directories to your container, 
+check out the [NIH HPC Binding external directories](https://hpc.nih.gov/apps/singularity.html#bind) section.
 
 ### Singularity Hub and Docker Hub
 
@@ -802,15 +815,34 @@ quit()
 exit
 ```
 
-If you don't want to learn how to write Docker files (definition files for 
-Docker) you can also use [Singularity Hub]() to build and host container 
+You can even use images on Docker Hub as a starting point for your own images.
+definition files allow you to specifiy a Docker Hub registry to bootstrap from
+and you can use the `%post` section to modify the container to your liking.
+
+If you want to host your containers, but you don't want to learn how to write 
+Docker files (definition files for Docker) you can also use 
+[Singularity Hub](https://singularity-hub.org/) to build and host container 
 images.  
 
 Both Docker Hub and Singularity Hub link to your GitHub account. New container
 builds are automatically triggered every time you push changes to a Docker file
 or a Singularity definition file in a linked repository.  
 
-### Miscellaneous topics 
+### Bringing it all together! `rnaseq`
+This repo contains a directory called rnaseq_example.  In it is a definition 
+file that combines a great number of the concepts that we covered today.  
+
+There is also a script called build.sh that uses a few clever tricks not 
+covered in this class.  First it builds a container in a host directory instead
+of using an image.  Then it measures the size of this directory and uses the
+`--import` command to dump the contents of the directory into an image of just
+the right size.  This ensures that the container is not bloated after building.
+
+At the conclusion of this class we will build the rnaseq image and it will be
+used in the follow-up class on creating reproducible workflows with Singularity 
+and Snakemake.  
+
+## Extras
 
 <b>pipes and redirection</b>
 
@@ -838,7 +870,7 @@ $ apt-get install xorg
 <b>GPU computing</b>
 
 In Singularity v2.2 it was necessary to install graphics card drivers into the 
-container to use GPU hardware for CUDA.  (See the [gpu4singularity script]() on
+container to use GPU hardware for CUDA.  (See the [gpu4singularity script](https://github.com/NIH-HPC/gpu4singularity) on
 GitHub for details.)  This is no longer necessary in v2.3.  In v2.3 the 
 experimental --nv option will look for NVIDIA libraries on the host system and
 automatically bind mount them to the container so that GPUs work seamlessly. 
