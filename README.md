@@ -44,12 +44,12 @@ on a different operating system.
 ### How do containers differ from virtual machines (VMs)
 
 Containers and VMs are both types of virtualization.  But it's important to 
-understand the differences between the two to know when to use each.
+understand the differences between the two and know when to use each.
 
 <b>Virtual Machines</b> install every last bit of an operating system (OS) 
 right down to the core software that allows the OS to control the hardware 
 (called the <i>kernel</i>).  This means that VMs:
-- Are complete in the sense that you can use a VM to interact with you computer
+- Are complete in the sense that you can use a VM to interact with your computer
 via a different OS.
 - Are extremely flexible.  For instance you an install a Windows VM on a MacOS 
 system using software like [VirtualBox](https://www.virtualbox.org/wiki/VirtualBox).  
@@ -62,7 +62,7 @@ Linux host OS.  (Although you can mix and match distributions.)  In practice,
 containers are only extensively developed on Linux.
 - Are much faster and lighter weight than VMs.  A container may be just a few
 hundred MB.
-- Are suitable for starting and stopping rapidly and running single apps.
+- Start and stop quickly and are suitable for running single apps.
 
 Because of their differences, VMs and containers serve different purposes and 
 should be favored under different circumstances.  
@@ -73,20 +73,23 @@ Word and Excel).
 non-interactively in their own custom environments.
 
 ### Docker
-Docker is currently the most popular and widely used container software.  It 
+
+[Docker](https://www.docker.com/) is currently the most popular and widely used container software.  It 
 has several strengths and weaknesses that make it a good choice for some 
 projects but not for others.
 
 <b>philosophy</b>
+
 Docker is built for running multiple containers on a single system and it 
 allows containers to share common software features for efficiency.  It also 
 seeks to fully isolate each container from all other containers and from the 
-host system.Docker assumes that you will be a root user.  Or that it will be OK 
+host system.  Docker assumes that you will be a root user.  Or that it will be OK 
 for you to elevate your privileges if you are not a root user.    
 
 <b>strengths</b>
+
 - Mature software with a large user community
-- Docker Hub!
+- [Docker Hub](https://hub.docker.com/)!
     - A place to build and host your containers
     - Fully integrated into core Docker
     - Over 100,000 pre-built containers
@@ -94,6 +97,7 @@ for you to elevate your privileges if you are not a root user.
 - Rich feature set
 
 <b>weaknesses</b>
+
 - Difficult to learn
     - Hidden innards 
     - Complex container model (layers)
@@ -102,23 +106,25 @@ for you to elevate your privileges if you are not a root user.
 Docker shines for DevOPs teams providing cloud-hosted micro-services to users.
 
 ### Singularity 
-Singularity is a relatively new container software developed by Greg Kurtzer at
+
+[Singularity](http://singularity.lbl.gov/) is a relatively new container software developed by Greg Kurtzer at
 Lawrence Berkley National labs.  It was developed with scientific software and
 HPC systems in mind.  
 
 <b>philosophy</b>
-Singularity assumes that each application will have it's own container.  It 
-does not seek to fully isolate containers from one aother or the host system.
+
+Singularity assumes (more or less) that each application will have it's own container.  It 
+does not seek to fully isolate containers from one another or the host system.
 Singularity assumes that you will have a build system where you are the root 
 user, but that you will also have a production system where you may or may not
 be the root user and which may or may not be separate from you build system.
 
 <b>strengths</b>
 - Easy to learn and use (relatively speaking)
-- Approved for HPC (installed on Biowulf)
+- Approved for HPC (installed on Biowulf and a bunch of other HPC systems)
 - Can convert Docker containers to Singularity via `pull` and `bootstrap` 
 commands
-- Singularity Hub
+- [Singularity Hub](https://singularity-hub.org/)
     - A place to build and host your containers similar to Docker Hub
 - Can also use Docker Hub!
 
@@ -191,13 +197,13 @@ You should see something like the following.
 
 ```
 Docker image path: index.docker.io/godlovedc/lolcow:latest
-Cache folder set to /home/godlovedc/.singularity/docker
-[1/1] |===================================| 100.0%
+Cache folder set to /home/ubuntu/.singularity/docker
+[6/6] |===================================| 100.0%
 Creating container runtime...
- ________________________________________
-/ You possess a mind not merely twisted, \
-\ but actually sprained.                 /
- ----------------------------------------
+ _______________________________________
+/ Excellent day for putting Slinkies on \
+\ an escalator.                         /
+ ---------------------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
@@ -208,7 +214,7 @@ Creating container runtime...
 You're cow will likely say something different (and be more colorful), but as 
 long as you see a cow your installation is working properly.  
 
-This command downloads and runs a container from [Docker Hub]().  During the 
+This command downloads and runs a container from [Docker Hub](https://hub.docker.com/r/godlovedc/lolcow/).  During the 
 next hour we will learn how to build a similar container from scratch.  
 
 
@@ -217,7 +223,7 @@ next hour we will learn how to build a similar container from scratch.
 In the second hour we will build the preceding container from scratch. Simply
 typing `singularity` will give you an summary of all the commands you can use.
 Typing `singularity help <command>` will give you more detailed information 
-about running an indvidual command.
+about running an individual command.
 
 ### Building a basic container
 
