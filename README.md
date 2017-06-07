@@ -624,34 +624,42 @@ Now we can call the lolcow.img as though it were an executable, and simply give
 it two arguments.  One for input and one for output.  
 
 ```
-$ ./lolcow.img jawa.sez output2
+$ ./lolcow.img input output2
 
 $ cat output2
+ ______________________________________
+/ The grass is always greener over the \
+\ septic tank                          /
+ --------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 ```
+
+Now our container behaves as though it's an executable that expects 2 arguments!
 
 ### Bind mounting host system directories into a container.
 
-It's also possible to create and modify files on the host system from within
+It's possible to create and modify files on the host system from within
 the container. In fact, that's exactly what we did in the previous example when
-we created output files in our home directory using the `singularity exec` 
-command.  
+we created output files in our home directory.  
 
 To be more concrete, consider this example. 
 
 ```
 $ singularity shell lolcow.img
 
-$ cat wutini > ~/jawa.sez
-
-$ ls
+$ echo wutini > ~/jawa.sez
 
 $ cat ~/jawa.sez
+wutini
 
 $ exit
 
-$ ls
-
 $ cat ~/jawa.sez
+wutini
 ```
 
 Here we shelled into a container and created a file with some text in our home
@@ -660,17 +668,17 @@ directory.  Even after we exited the container, the file still existed.
 There are several special directories that Singularity <i>bind mounts</i> into
 your container by default.  These include:
 
-- ~
-- /tmp
-- /proc
-- /sys
-- /
+- `/home/$USER`
+- `/tmp`
+- `/proc`
+- `/sys`
+- `/dev`
 
-You can specify other directories to bind too using the `--bind` command or the 
-environmental variable `$SINGULARITY_BIND_PATH`
+You can specify other directories to bind too using the `--bind` option or the 
+environmental variable `$SINGULARITY_BINDPATH`
 
-Let's say we want to use our `conwsay.img` container to analyze data and write 
-output to a different directory.  For this example, we first need to create a 
+Let's say we want to use our `cowsay.img` container to "analyze data" and save 
+results in a different directory.  For this example, we first need to create a 
 new directory with some data on our host system.  
 
 ```
@@ -678,7 +686,7 @@ $ sudo mkdir /data
 
 $ sudo chown $USER:$USER /data
 
-$ cat 'I am your father' > /data/vador.sez
+$ echo 'I am your father' > /data/vader.sez
 ```
 
 We also need to make a directory within our container where we can bind mount
@@ -688,18 +696,21 @@ the system directory.
 $ sudo singularity exec --writable lolcow.img mkdir /data
 ```
 
-Now let's see how that works.  First, let's list the contents of `/data`
+Now let's see how bind mounts work.  First, let's list the contents of `/data`
 within the container without bind mounting.
 
 ```
-$ singularity exec lolcow.img ls /data
+$ singularity exec lolcow.img ls -l /data
+total 0
 ```
 
 The `/data` directory within the container is empty.  Now let's repeat the same
 command but using the `--bind` option.
 
 ```
-$ singularity exec --bind /data lolcow.img ls /data
+$ singularity exec --bind /data lolcow.img ls -l /data
+total 4
+-rw-rw-r-- 1 ubuntu ubuntu 17 Jun  7 20:57 vader.sez
 ```
 
 Now the `/data` directory in the container is bind mounted to the `/data` 
@@ -710,7 +721,7 @@ container as though it were an executable?  The `singularity run` command
 accepts the `--bind` option and can execute our runscript like so.
 
 ```
-$ singularity run --bind /data lolcow.img /data/vador.sez /data/output3
+$ singularity run --bind /data lolcow.img /data/vader.sez /data/output3
 ```
 
 But that's a cumbersome command.  Instead, we could set the variable 
@@ -719,9 +730,36 @@ But that's a cumbersome command.  Instead, we could set the variable
 ```
 $ export SINGULARITY_BINDPATH=/data
 
-$ ./lolcow.img /data/output3 /data/metacow
+$ ./lolcow.img /data/output3 /data/metacow2
 
-$ cat /data/metacow
+$ ls -l /data/
+total 12
+-rw-rw-r-- 1 ubuntu ubuntu 809 Jun  7 21:07 metacow2
+-rw-rw-r-- 1 ubuntu ubuntu 184 Jun  7 21:06 output3
+-rw-rw-r-- 1 ubuntu ubuntu  17 Jun  7 20:57 vader.sez
+
+$ cat /data/metacow2
+ ________________________________________
+/  __________________ < I am your father \
+| >                                      |
+|                                        |
+| ------------------                     |
+|                                        |
+| \ ^__^                                 |
+|                                        |
+| \ (oo)\_______                         |
+|                                        |
+| (__)\ )\/\                             |
+|                                        |
+| ||----w |                              |
+|                                        |
+\ || ||                                  /
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 ```
 
 ### Singularity Hub and Docker Hub
