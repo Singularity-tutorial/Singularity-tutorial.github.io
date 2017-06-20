@@ -17,7 +17,7 @@ in this class, see the following:
 
 ### What IS a software container anyway? (And what's it good for?)
 
-A container allows you to stick an application and all of it's dependencies 
+A container allows you to stick an application and all of its dependencies 
 into a single package.  This makes your package portable, shareable, and 
 reproducible.
 
@@ -26,7 +26,7 @@ Containers foster portability and reproducibility because they package
 operating system!
 
 This means you're application won't break when you port it to a new computer 
-because there is something different about the new environment.  It brings it's 
+because there is something different about the new environment.  It brings its 
 environment with it.
 
 Here are some of the things you can do with containers:
@@ -113,7 +113,7 @@ HPC systems in mind.
 
 <b>philosophy</b>
 
-Singularity assumes (more or less) that each application will have it's own container.  It 
+Singularity assumes (more or less) that each application will have its own container.  It 
 does not seek to fully isolate containers from one another or the host system.
 Singularity assumes that you will have a build system where you are the root 
 user, but that you will also have a production system where you may or may not
@@ -714,7 +714,7 @@ total 4
 ```
 
 Now the `/data` directory in the container is bind mounted to the `/data` 
-directory on the host system and we can see it's contents.  
+directory on the host system and we can see its contents.  
 
 Now what about our earlier example in which we used a runscript to run a our
 container as though it were an executable?  The `singularity run` command 
