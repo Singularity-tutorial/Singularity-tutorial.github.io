@@ -25,7 +25,7 @@ Containers foster portability and reproducibility because they package
 <b>ALL</b> of an applications dependencies... including an entire small 
 operating system!
 
-This means you're application won't break when you port it to a new computer 
+This means your application won't break when you port it to a new computer 
 because there is something different about the new environment.  It brings its 
 environment with it.
 
@@ -211,7 +211,7 @@ Creating container runtime...
                 ||     ||
 ```
 
-You're cow will likely say something different (and be more colorful), but as 
+Your cow will likely say something different (and be more colorful), but as 
 long as you see a cow your installation is working properly.  
 
 This command downloads and runs a container from [Docker Hub](https://hub.docker.com/r/godlovedc/lolcow/).  During the 
