@@ -590,10 +590,10 @@ $ cat output2
 
 It's possible to create and modify files on the host system from within the container. In fact, that's exactly what we did in the previous example when we created output files in our home directory.  
 
-To be more concrete, consider this example. 
+Let's be more explicit. Consider this example. 
 
 ```
-$ singularity shell lolcow.img
+$ singularity shell lolcow.simg
 
 $ echo wutini > ~/jawa.sez
 
