@@ -766,7 +766,7 @@ Stopping cow3 instance of /home/dave/lolcow.simg (PID=10885)
 
 #### nginx (useful) example
 
-These examples are not very useful because `lolcow.img` doesn't run any services.  Let's extend the example to something useful by running a local nginx web server in the background.  This command will download the official nginx image from Docker Hub and start it in a background instance called "web".  (The commands need to be executed as root so that nginx can run with the privileges it needs.)
+These examples are not very useful because `lolcow.simg` doesn't run any services.  Let's extend the example to something useful by running a local nginx web server in the background.  This command will download the official nginx image from Docker Hub and start it in a background instance called "web".  (The commands need to be executed as root so that nginx can run with the privileges it needs.)
 
 ```
 $ sudo singularity instance.start docker://nginx web
