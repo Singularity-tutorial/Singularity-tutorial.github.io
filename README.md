@@ -138,6 +138,12 @@ $ make
 $ sudo make install
 ```
 
+If you want support for tab completion of Singularity commands, you need to source the appropriate file and add it to the bash completion directory in `/etc` so that it will be sourced automatically when you start another shell.
+
+```
+
+```
+
 If everything went according to plan, you now have a working installation of Singularity.  You can test your installation like so:
 
 ```
@@ -372,6 +378,20 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
 %environment
     export PATH=/usr/games:$PATH
+```
+
+Let's rebuild the container with the new definition file.
+
+```
+$ sudo singularity build --force lolcow.simg lolcow.def
+```
+
+Note the addition of the `--force` option.  This will overwrite our old container with the new one.  
+
+Singularity stores a lot of [useful metadata]().  If you want to see the recipe file that was used to create the container you can use the `inspect` command like so:
+
+```
+$ singularity inspect lolcow.simg
 ```
 
 ### Blurring the line between the container and the host system.
@@ -650,6 +670,81 @@ $ cat /data/metacow2
 ```
 
 For a lot more info on how to bind mount host directories to your container, check out the [NIH HPC Binding external directories](https://hpc.nih.gov/apps/singularity.html#bind) section.
+
+### Singularity Instances
+
+Up to now all of our examples have run Singularity containers in the foreground.  But what if you want to run a service like a web server or a database in a Singularity container in the background? 
+
+#### lolcow example
+In Singularity v2.4+, you can use the `instance` command group to start and control container instances that run in the background.  To demonstrate, let's start an instance of our `lolcow.simg` container running in the background.
+
+```
+$ singularity instance.start lolcow.simg cow1
+```
+
+We can use the `instance.list` command to show the instances that are currently running.
+
+```
+$ singularity instance.list 
+```
+
+We can connect to running instances using the `instance://` URI like so:
+
+```
+$ singularity shell instance://cow1
+
+$ ps -ef 
+
+$ exit
+```
+
+Note that we've entered a new PID namespace, so that the Singularity controlled `sinit` process has PID number 1. 
+
+You can start multiple instances running in the background, as long as you give them unique names.
+
+```
+$ singularity instance.start lolcow.simg cow2
+
+$ singularity instance.start lolcow.simg cow3
+
+$ singularity instance.list
+```
+
+You can stop individual instances using their unique names or stop all instances with the `--all` option.
+
+```
+$ singularity instance.stop cow1
+
+$ singularity instance.stop --all
+```
+
+#### A useful example
+
+These examples are not very useful because `lolcow.img` doesn't run any services.  Let's extend the example to something useful by running a local nginx web server in the background.  This command will download the official nginx image from Docker Hub and start it in a background instance called "web".  (The commands need to be executed as root so that nginx can run with the privileges it needs.)
+
+```
+$ sudo singularity instance.start docker://nginx web
+
+$ sudo singularity instance.list
+```
+
+Now to start nginx running in the instance called web.
+
+```
+$ sudo singularity exec instance://web nginx
+```
+
+Now we have an nginx web server running on our localhost.  We can verify that it is running with `curl`.  
+
+```
+$ curl localhost
+```
+
+When finished, we can stop all running instances like so:
+
+```
+$ sudo singularity instance.stop --all
+```
 
 ### Singularity Hub and Docker Hub
 
