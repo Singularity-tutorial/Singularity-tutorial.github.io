@@ -461,22 +461,17 @@ We created a file called `cowsaid` in the current working directory with the out
 We can also pipe things _into_ the container.
 
 ```
-$ cat cowsaid | singularity exec lolcow.simg cowsay
- ________________
-/  _____ < moo > \
-|                |
-| -----          |
-|                |
-| \ ^__^         |
-|                |
-| \ (oo)\_______ |
-|                |
-| (__)\ )\/\     |
-|                |
-| ||----w |      |
-|                |
-\ || ||          /
- ----------------
+$ cat cowsaid | singularity exec lolcow.simg cowsay -n
+ ______________________________
+/  _____                       \
+| < moo >                      |
+|  -----                       |
+|         \   ^__^             |
+|          \  (oo)\_______     |
+|             (__)\       )\/\ |
+|                 ||----w |    |
+\                 ||     ||    /
+ ------------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
