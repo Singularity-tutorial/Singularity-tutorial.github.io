@@ -629,35 +629,31 @@ $ sudo chown $USER:$USER /data
 $ echo 'I am your father' > /data/vader.sez
 ```
 
-We also need to make a directory within our container where we can bind mount the system directory.
+We also need a directory _within_ our container where we can bind mount the host system `/data` directory.  We could create another directory in the `%post` section of our recipe file and rebuild the container, but our container already has a directory called `/mnt` that we can use for this example. 
+
+Now let's see how bind mounts work.  First, let's list the contents of `/mnt` within the container without bind mounting `/data` to it.
 
 ```
-$ sudo singularity exec --writable lolcow.simg mkdir /data
-```
-
-Now let's see how bind mounts work.  First, let's list the contents of `/data` within the container without bind mounting.
-
-```
-$ singularity exec lolcow.simg ls -l /data
+$ singularity exec lolcow.simg ls -l /mnt
 total 0
 ```
 
-The `/data` directory within the container is empty.  Now let's repeat the same command but using the `--bind` option.
+The `/mnt` directory within the container is empty.  Now let's repeat the same command but using the `--bind` option to bind mount `/data` into the container.
 
 ```
-$ singularity exec --bind /data lolcow.simg ls -l /data
+$ singularity exec --bind /data:/mnt lolcow.simg ls -l /mnt
 total 4
 -rw-rw-r-- 1 ubuntu ubuntu 17 Jun  7 20:57 vader.sez
 ```
 
-Now the `/data` directory in the container is bind mounted to the `/data` directory on the host system and we can see its contents.  
+Now the `/mnt` directory in the container is bind mounted to the `/data` directory on the host system and we can see its contents.  
 
 Now what about our earlier example in which we used a runscript to run a our container as though it were an executable?  The `singularity run` command  accepts the `--bind` option and can execute our runscript like so.
 
 ```
-$ singularity run --bind /data lolcow.simg /data/vader.sez /data/output3
+$ singularity run --bind /data:/mnt lolcow.simg /mnt/vader.sez /mnt/output3
 
-$ cat output3
+$ cat /data/output3
  __________________
 < I am your father >
  ------------------
@@ -671,7 +667,7 @@ $ cat output3
 But that's a cumbersome command.  Instead, we could set the variable `$SINGULARITY_BINDPATH` and then use our container as before.
 
 ```
-$ export SINGULARITY_BINDPATH=/data
+$ export SINGULARITY_BINDPATH=/data:/mnt
 
 $ ./lolcow.simg /data/output3 /data/metacow2
 
