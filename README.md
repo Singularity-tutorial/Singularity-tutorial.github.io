@@ -427,7 +427,7 @@ Singularity does not try to isolate your container completely from the host syst
 Using the exec command, we can run commands within the container from the host system.  
 
 ```
-$ singularity exec lolcow.img cowsay 'How did you get out of the container?'
+$ singularity exec lolcow.simg cowsay 'How did you get out of the container?'
  _______________________________________
 < How did you get out of the container? >
  ---------------------------------------
