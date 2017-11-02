@@ -394,9 +394,7 @@ Let's rebuild the container with the new definition file.
 $ sudo singularity build lolcow.simg Singularity
 ```
 
-Note that we changed the name of the container.  Now we are building our container in the standard Singularity squashfs file format, and we are denoting that with the (optional) `.simg` file extension.
-
-A squashfs file is compressed and immutable making it a good choice for a production environment.
+Note that we changed the name of the container.  By omitting the `--sandbox` option, we are building our container in the standard Singularity squashfs file format.  We are denoting the file format with the (optional) `.simg` extension.  A squashfs file is compressed and immutable making it a good choice for a production environment.
 
 Singularity stores a lot of [useful metadata](http://singularity.lbl.gov/docs-environment-metadata).  For instance, if you want to see the recipe file that was used to create the container you can use the `inspect` command like so:
 
