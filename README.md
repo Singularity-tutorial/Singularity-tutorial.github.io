@@ -550,13 +550,12 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
-    locale-gen en_US.UTF-8
     apt-get -y update
     apt-get -y --force-yes install vim fortune cowsay lolcat
 
-
 %environment
     export PATH=/usr/games:$PATH
+    export LC_ALL=C
 ```
 
 Now we can call the lolcow.img as though it were an executable, and simply give it two arguments.  One for input and one for output.  
