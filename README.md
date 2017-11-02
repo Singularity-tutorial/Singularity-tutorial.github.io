@@ -105,9 +105,9 @@ Here we will install the latest tagged release from [GitHub](https://github.com/
 We're going to compile Singularity from source code.  First we'll need to make sure we have some development tools installed so that we can do that.  On Ubuntu, run these commands to make sure you have all the necessary packages installed.
 
 ```
-$ sudo -y apt-get update 
+$ sudo apt-get update
 
-$ sudo -y apt-get install python dh-autoreconf build-essential debootstrap
+$ sudo apt-get -y install python dh-autoreconf build-essential debootstrap
 ```
 
 On CentOS, these commmands should get you up to speed.
@@ -212,7 +212,7 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
-    apt-get -y --force-yes install vim
+    apt-get -y install vim
 
 ```
 
@@ -295,7 +295,7 @@ Now we are the root user inside the container. Note also the addition of the `--
 Let's try installing some software again.
 
 ```
-$ apt-get -y update && apt-get -y install fortune cowsay lolcat
+$ apt-get update && apt-get -y install fortune cowsay lolcat
 ```
 
 Now you should see the programs successfully installed.  Let's try running the demo in this new container.
@@ -380,8 +380,8 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
-    apt-get -y update
-    apt-get -y --force-yes install vim fortune cowsay lolcat
+    apt-get update
+    apt-get -y install vim fortune cowsay lolcat
 
 %environment
     export PATH=/usr/games:$PATH
@@ -412,8 +412,8 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
-    apt-get -y update
-    apt-get -y --force-yes install vim fortune cowsay lolcat
+    apt-get update
+    apt-get -y install vim fortune cowsay lolcat
 
 %environment
     export PATH=/usr/games:$PATH
@@ -550,8 +550,8 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
-    apt-get -y update
-    apt-get -y --force-yes install vim fortune cowsay lolcat
+    apt-get update
+    apt-get -y install vim fortune cowsay lolcat
 
 %environment
     export PATH=/usr/games:$PATH
