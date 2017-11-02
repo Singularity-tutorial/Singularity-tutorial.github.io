@@ -388,7 +388,7 @@ $ sudo singularity build --force lolcow.simg lolcow.def
 
 Note the addition of the `--force` option.  This will overwrite our old container with the new one.  
 
-Singularity stores a lot of [useful metadata]().  If you want to see the recipe file that was used to create the container you can use the `inspect` command like so:
+Singularity stores a lot of [useful metadata](http://singularity.lbl.gov/docs-environment-metadata).  If you want to see the recipe file that was used to create the container you can use the `inspect` command like so:
 
 ```
 $ singularity inspect lolcow.simg
