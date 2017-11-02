@@ -146,6 +146,7 @@ If you want support for tab completion of Singularity commands, you need to sour
 
 ```
 $ . etc/bash_completion.d/singularity
+
 $ sudo cp etc/bash_completion.d/singularity /etc/bash_completion.d/
 ```
 
