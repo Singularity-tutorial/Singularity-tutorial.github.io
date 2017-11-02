@@ -570,7 +570,7 @@ After rebuilding our container, we can call the lolcow.simg as though it were an
 
 ```
 $ ./lolcow.simg
-
+Please provide an input and an output file.
 
 $ ./lolcow.simg input output2
 
