@@ -708,7 +708,7 @@ For a lot more info on how to bind mount host directories to your container, che
 Up to now all of our examples have run Singularity containers in the foreground.  But what if you want to run a service like a web server or a database in a Singularity container in the background? 
 
 #### lolcow (useless) example
-In Singularity v2.4+, you can use the `instance` command group to start and control container instances that run in the background.  To demonstrate, let's start an instance of our `lolcow.simg` container running in the background.
+In Singularity v2.4+, you can use the [`instance` command group](http://singularity.lbl.gov/docs-instances) to start and control container instances that run in the background.  To demonstrate, let's start an instance of our `lolcow.simg` container running in the background.
 
 ```
 $ singularity instance.start lolcow.simg cow1
