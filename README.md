@@ -757,8 +757,11 @@ You can stop individual instances using their unique names or stop all instances
 
 ```
 $ singularity instance.stop cow1
+Stopping cow1 instance of /home/dave/lolcow.simg (PID=10794)
 
 $ singularity instance.stop --all
+Stopping cow2 instance of /home/dave/lolcow.simg (PID=10855)
+Stopping cow3 instance of /home/dave/lolcow.simg (PID=10885)
 ```
 
 #### nginx (useful) example
