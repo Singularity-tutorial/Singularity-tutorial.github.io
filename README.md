@@ -632,20 +632,20 @@ $ echo 'I am your father' > /data/vader.sez
 We also need to make a directory within our container where we can bind mount the system directory.
 
 ```
-$ sudo singularity exec --writable lolcow.img mkdir /data
+$ sudo singularity exec --writable lolcow.simg mkdir /data
 ```
 
 Now let's see how bind mounts work.  First, let's list the contents of `/data` within the container without bind mounting.
 
 ```
-$ singularity exec lolcow.img ls -l /data
+$ singularity exec lolcow.simg ls -l /data
 total 0
 ```
 
 The `/data` directory within the container is empty.  Now let's repeat the same command but using the `--bind` option.
 
 ```
-$ singularity exec --bind /data lolcow.img ls -l /data
+$ singularity exec --bind /data lolcow.simg ls -l /data
 total 4
 -rw-rw-r-- 1 ubuntu ubuntu 17 Jun  7 20:57 vader.sez
 ```
@@ -655,7 +655,7 @@ Now the `/data` directory in the container is bind mounted to the `/data` direct
 Now what about our earlier example in which we used a runscript to run a our container as though it were an executable?  The `singularity run` command  accepts the `--bind` option and can execute our runscript like so.
 
 ```
-$ singularity run --bind /data lolcow.img /data/vader.sez /data/output3
+$ singularity run --bind /data lolcow.simg /data/vader.sez /data/output3
 
 $ cat output3
  __________________
@@ -673,7 +673,7 @@ But that's a cumbersome command.  Instead, we could set the variable `$SINGULARI
 ```
 $ export SINGULARITY_BINDPATH=/data
 
-$ ./lolcow.img /data/output3 /data/metacow2
+$ ./lolcow.simg /data/output3 /data/metacow2
 
 $ ls -l /data/
 total 12
