@@ -503,7 +503,7 @@ $ echo "The grass is always greener over the septic tank" > input
 Now I'll "analyze" the "data"
 
 ```
-$ cat input | singularity exec lolcow.img cowsay > output
+$ cat input | singularity exec lolcow.simg cowsay > output
 ```
 
 The "analyzed data" is saved in a file called `output`. 
