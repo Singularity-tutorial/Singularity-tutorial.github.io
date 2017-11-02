@@ -295,7 +295,7 @@ Now we are the root user inside the container. Note also the addition of the `--
 Let's try installing some software again.
 
 ```
-$ apt-get update && apt-get install fortune cowsay lolcat
+$ apt-get -y update && apt-get -y install fortune cowsay lolcat
 ```
 
 Now you should see the programs successfully installed.  Let's try running the demo in this new container.
