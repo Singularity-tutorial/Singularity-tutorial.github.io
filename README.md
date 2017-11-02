@@ -380,27 +380,46 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
-    locale-gen en_US.UTF-8
     apt-get -y update
     apt-get -y --force-yes install vim fortune cowsay lolcat
 
-
 %environment
     export PATH=/usr/games:$PATH
+    export LC_ALL=C
 ```
 
 Let's rebuild the container with the new definition file.
 
 ```
-$ sudo singularity build --force lolcow.simg lolcow.def
+$ sudo singularity build lolcow.simg Singularity
 ```
 
-Note the addition of the `--force` option.  This will overwrite our old container with the new one.  
+Note that we changed the name of the container.  Now we are building our container in the standard Singularity squashfs file format, and we are denoting that with the (optional) `.simg` file extension.
 
-Singularity stores a lot of [useful metadata](http://singularity.lbl.gov/docs-environment-metadata).  If you want to see the recipe file that was used to create the container you can use the `inspect` command like so:
+A squashfs file is compressed and immutable making it a good choice for a production environment.
+
+Singularity stores a lot of [useful metadata](http://singularity.lbl.gov/docs-environment-metadata).  For instance, if you want to see the recipe file that was used to create the container you can use the `inspect` command like so:
 
 ```
-$ singularity inspect lolcow.simg
+$ singularity inspect --deffile lolcow.simg
+BootStrap: debootstrap
+OSVersion: trusty
+MirrorURL: http://us.archive.ubuntu.com/ubuntu/
+
+
+%runscript
+    echo "This is what happens when you run the container..."
+
+
+%post
+    echo "Hello from inside the container"
+    sed -i 's/$/ universe/' /etc/apt/sources.list
+    apt-get -y update
+    apt-get -y --force-yes install vim fortune cowsay lolcat
+
+%environment
+    export PATH=/usr/games:$PATH
+    export LC_ALL=C
 ```
 
 ### Blurring the line between the container and the host system.
