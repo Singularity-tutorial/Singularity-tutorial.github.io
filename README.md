@@ -220,7 +220,7 @@ $ mv Singularity lolcow.def
 $ sudo singularity build --sandbox lolcow.img lolcow.def
 ```
 
-Note the `--sandbox` option.  Singularity can build containers in several different file formats. The default is to build a [squashfs]() image. The squashfs format is compressed and immutable making it a good choice for reproducible, production-grade containers.  But if you want to shell into a container and tinker with it, you should build a sandbox (which is really just a directory).  This is great when you are still developing your container and don't yet know what should be included in the recipe file.  
+Note the `--sandbox` option.  Singularity can build containers in several different file formats. The default is to build a [squashfs](https://en.wikipedia.org/wiki/SquashFS) image. The squashfs format is compressed and immutable making it a good choice for reproducible, production-grade containers.  But if you want to shell into a container and tinker with it, you should build a sandbox (which is really just a directory).  This is great when you are still developing your container and don't yet know what should be included in the recipe file.  
 
 When your build finishes you will have a basic Ubuntu container saved in a local directory.
 
