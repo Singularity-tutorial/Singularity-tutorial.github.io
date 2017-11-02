@@ -267,7 +267,7 @@ $ hostname
 hal-9000
 ```
 
-This is one of the core features of Singularity that makes it so attractive from a security standpoint.  The user (along with all groups/permissions etc.) remains the same inside and outside of the container. 
+This is one of the core features of Singularity that makes it so attractive from a security standpoint.  The user remains the same inside and outside of the container. 
 
 Let's try installing some software. I used the programs `fortune`, `cowsay`, and `lolcat` to produce the container that we saw in the first demo.
 
@@ -278,14 +278,16 @@ bash: sudo: command not found
 
 Whoops!
 
-Singularity complains that it can't find the `sudo` command.  But even if you try to install `sudo` or change to root using `su`, you will find it impossible to elevate your privileges within the container.  Once again, this is an important concept in Singularity.  If you enter a container without root privileges, you are unable to obtain root privileges within the container.
+Singularity complains that it can't find the `sudo` command.  But even if you try to install `sudo` or change to root using `su`, you will find it impossible to elevate your privileges within the container.  
+
+Once again, this is an important concept in Singularity.  If you enter a container without root privileges, you are unable to obtain root privileges within the container.  This insurance against privilege escalation is the reason that you will find Singularity installed in so many HCP environments.  
 
 Let's exit the container and re-enter as root.
 
 ```
 $ exit
 
-$ sudo singularity shell --writable lolcow.img
+$ sudo singularity shell --writable lolcow
 ```
 
 Now we are the root user inside the container. Note also the addition of the `--writable` option.  This option allows us to modify the container.  The changes will actually be saved into the container and will persist across uses. 
