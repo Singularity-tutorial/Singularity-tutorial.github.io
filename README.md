@@ -443,7 +443,7 @@ In this example, singularity entered the container, ran the `cowsay` command, di
 You can also use pipes and redirection to blur the lines between the container and the host system.  
 
 ```
-$ singularity exec lolcow.img cowsay moo > cowsaid
+$ singularity exec lolcow.simg cowsay moo > cowsaid
 
 $ cat cowsaid
  _____
@@ -461,7 +461,7 @@ We created a file called `cowsaid` in the current working directory with the out
 We can also pipe things _into_ the container.
 
 ```
-$ cat cowsaid | singularity exec lolcow.img cowsay
+$ cat cowsaid | singularity exec lolcow.simg cowsay
  ________________
 /  _____ < moo > \
 |                |
@@ -490,9 +490,9 @@ We've created a meta-cow (a cow that talks about cows). :stuck_out_tongue_winkin
 
 ### Making containerized apps behave more like normal apps
 
-In the third hour we are going to consider an extended example describing a program that takes a file as input, analyzes the data in the file, and produces another file as output.  This is obviously a very common situation.  
+In the third hour we are going to consider an extended example describing a containerized application that takes a file as input, analyzes the data in the file, and produces another file as output.  This is obviously a very common situation.  
 
-Let's imagine that we want to use the cowsay program in our lolcow.img to "analyze data".  We should give our container an input file, it should reformat it (in the form of a cow speaking), and it should dump the output into another file.  
+Let's imagine that we want to use the cowsay program in our `lolcow.simg` to "analyze data".  We should give our container an input file, it should reformat it (in the form of a cow speaking), and it should dump the output into another file.  
 
 Here's an example.  First I'll make some "data"
 
