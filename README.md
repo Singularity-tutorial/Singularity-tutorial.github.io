@@ -747,6 +747,10 @@ $ singularity instance.start lolcow.simg cow2
 $ singularity instance.start lolcow.simg cow3
 
 $ singularity instance.list
+DAEMON NAME      PID      CONTAINER IMAGE
+cow1             10794    /home/dave/lolcow.simg
+cow2             10855    /home/dave/lolcow.simg
+cow3             10885    /home/dave/lolcow.simg
 ```
 
 You can stop individual instances using their unique names or stop all instances with the `--all` option.
