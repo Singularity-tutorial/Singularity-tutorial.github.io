@@ -558,13 +558,15 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     export LC_ALL=C
 ```
 
-Now after rebuilding our container, we can call the lolcow.simg as though it were an executable, and simply give it two arguments.  One for input and one for output.  
+Now we must rebuild out container to install the new runscript.  
 
 ```
 $ sudo singularity build --force lolcow.simg Singularity
 ```
 
 Note the `--force` option which ensures our previous container is completely overwritten.
+
+After rebuilding our container, we can call the lolcow.simg as though it were an executable, and simply give it two arguments.  One for input and one for output.  
 
 ```
 $ ./lolcow.simg
