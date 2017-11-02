@@ -770,8 +770,14 @@ These examples are not very useful because `lolcow.simg` doesn't run any service
 
 ```
 $ sudo singularity instance.start docker://nginx web
+Docker image path: index.docker.io/library/nginx:latest
+Cache folder set to /root/.singularity/docker
+[3/3] |===================================| 100.0%
+Creating container runtime...
 
 $ sudo singularity instance.list
+DAEMON NAME      PID      CONTAINER IMAGE
+web              15379    /tmp/.singularity-runtime.MBzI4Hus/nginx
 ```
 
 Now to start nginx running in the instance called web.
@@ -784,9 +790,35 @@ Now we have an nginx web server running on our localhost.  We can verify that it
 
 ```
 $ curl localhost
+127.0.0.1 - - [02/Nov/2017:19:20:39 +0000] "GET / HTTP/1.1" 200 612 "-" "curl/7.52.1" "-"
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
 ```
 
-When finished, we can stop all running instances like so:
+When finished, don't forget to stop all running instances like so:
 
 ```
 $ sudo singularity instance.stop --all
