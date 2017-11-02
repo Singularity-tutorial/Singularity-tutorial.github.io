@@ -335,13 +335,10 @@ We're making progress, but we are now receiving a warning from perl.  However, b
 
 We changed our path in this session, but those changes will disappear as soon as we exit the container just like they will when you exit any other shell.  To make the changes permanent we should add them to the definition file and re-bootstrap the container.  We'll do that in a minute.
 
-Now back to our perl warning.  Perl is complaining that the locale is not set properly.  Basically, perl wants to know where you are and what sort of language encoding it should use.  Should you encounter this warning you can  probably fix it with the `locale-gen` command or by setting `LC_ALL=C`.  Here we'll use `locale-gen`.
+Now back to our perl warning.  Perl is complaining that the locale is not set properly.  Basically, perl wants to know where you are and what sort of language encoding it should use.  Should you encounter this warning you can  probably fix it with the `locale-gen` command or by setting `LC_ALL=C`.  Here we'll just set the environment variable.
 
 ```
-$ locale-gen en_US.UTF-8
-Generating locales...
-  en_US.UTF-8... done
-Generation complete.
+$ export LC_ALL=C
 
 $ fortune | cowsay | lolcat
  _________________________________________
@@ -365,7 +362,7 @@ Let's update our definition file with the changes we made to this container.
 ```
 $ exit
 
-$ nano lolcow.def
+$ nano Singularity
 ```
 
 Here is what our updated definition file should look like.
