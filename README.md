@@ -145,7 +145,8 @@ $ sudo make install
 If you want support for tab completion of Singularity commands, you need to source the appropriate file and add it to the bash completion directory in `/etc` so that it will be sourced automatically when you start another shell.
 
 ```
-
+$ . etc/bash_completion.d/singularity
+$ sudo cp etc/bash_completion.d/singularity /etc/bash_completion.d/
 ```
 
 If everything went according to plan, you now have a working installation of Singularity.  You can test your installation like so:
