@@ -896,7 +896,7 @@ Both Docker Hub and Singularity Hub link to your GitHub account. New container b
 
 ## Miscellaneous Topics
 
-<b>pipes and redirection</b>
+### pipes and redirection
 
 As we demonstrated earlier, pipes and redirects work as expected between a container and host system.  If you need to pipe the output of one command in your container to another command in your container things may be more complicated.
 
