@@ -278,7 +278,7 @@ bash: sudo: command not found
 
 Whoops!
 
-Singularity complains that it can't find the sudo command.  It is really complaining that it can't elevate your privileges within the container.  Once again, this is an important concept in Singularity.  If you enter a container without root privileges, you are unable to obtain root privileges within the container.
+Singularity complains that it can't find the `sudo` command.  But even if you try to install `sudo` or change to root using `su`, you will find it impossible to elevate your privileges within the container.  Once again, this is an important concept in Singularity.  If you enter a container without root privileges, you are unable to obtain root privileges within the container.
 
 Let's exit the container and re-enter as root.
 
