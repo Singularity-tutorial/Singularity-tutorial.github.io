@@ -15,7 +15,7 @@ This is an introductory workshop on Singularity. It was originally taught by Dav
 
 ### What IS a software container anyway? (And what's it good for?)
 
-A container allows you to stick an application and all of its dependencies into a single package.  This makes your package portable, shareable, and reproducible.
+A container allows you to stick an application and all of its dependencies into a single package.  This makes your application portable, shareable, and reproducible.
 
 Containers foster portability and reproducibility because they package **ALL** of an applications dependencies... including its own tiny operating system!
 
@@ -48,11 +48,13 @@ Because of their differences, VMs and containers serve different purposes and sh
 
 ### Docker
 
-[Docker](https://www.docker.com/) is currently the most popular and widely used container software.  It has several strengths and weaknesses that make it a good choice for some projects but not for others.
+[Docker](https://www.docker.com/) is currently the most widely used container software.  It has several strengths and weaknesses that make it a good choice for some projects but not for others.
 
 **philosophy**
 
-Docker is built for running multiple containers on a single system and it allows containers to share common software features for efficiency.  It also seeks to fully isolate each container from all other containers and from the host system.  Docker assumes that you will be a root user.  Or that it will be OK for you to elevate your privileges if you are not a root user.    
+Docker is built for running multiple containers on a single system and it allows containers to share common software features for efficiency.  It also seeks to fully isolate each container from all other containers and from the host system.  
+
+Docker assumes that you will be a root user.  Or that it will be OK for you to elevate your privileges if you are not a root user.    
 
 **strengths**
 
@@ -69,23 +71,25 @@ Docker is built for running multiple containers on a single system and it allows
 - Difficult to learn
     - Hidden innards 
     - Complex container model (layers)
+- Not architected with security in mind
 - Not built for HPC (but good for cloud) 
 
 Docker shines for DevOPs teams providing cloud-hosted micro-services to users.
 
 ### Singularity 
 
-[Singularity](http://singularity.lbl.gov/) is a relatively new container software originally developed by Greg Kurtzer while at Lawrence Berkley National labs.  It was developed with scientific software and HPC systems in mind.  
+[Singularity](http://singularity.lbl.gov/) is a relatively new container software originally developed by Greg Kurtzer while at Lawrence Berkley National labs.  It was developed with security, scientific software, and HPC systems in mind.  
 
 **philosophy**
 
-Singularity assumes ([more or less](http://containers-ftw.org/SCI-F/)) that each application will have its own container.  It does not seek to fully isolate containers from one another or the host system. Singularity assumes that you will have a build system where you are the root user, but that you will also have a production system where you may or may not be the root user. 
+Singularity assumes ([more or less](http://containers-ftw.org/SCI-F/)) that each application will have its own container.  It does not seek to fully isolate containers from one another or the host system. 
+Singularity assumes that you will have a build system where you are the root user, but that you will also have a production system where you may or may not be the root user. 
 
 **strengths**
 - Easy to learn and use (relatively speaking)
 - Approved for HPC (installed on some of the biggest HPC systems in the world)
 - Can convert Docker containers to Singularity and run containers directly from Docker Hub
-- [Singularity Hub](https://singularity-hub.org/)
+- [Singularity Hub](https://singularity-hub.org/)!
     - A place to build and host your containers similar to Docker Hub
 
 <b>weaknesses</b>
@@ -101,9 +105,9 @@ Here we will install the latest tagged release from [GitHub](https://github.com/
 We're going to compile Singularity from source code.  First we'll need to make sure we have some development tools installed so that we can do that.  On Ubuntu, run these commands to make sure you have all the necessary packages installed.
 
 ```
-$ sudo apt-get update 
+$ sudo -y apt-get update 
 
-$ sudo apt-get install python dh-autoreconf build-essential debootstrap
+$ sudo -y apt-get install python dh-autoreconf build-essential debootstrap
 ```
 
 On CentOS, these commmands should get you up to speed.
@@ -121,7 +125,7 @@ $ sudo yum install debootstrap.noarch
 Next we'll download a compressed archive of the source code (using the the `wget` command). Then we'll extract the source code from the archive (with the `tar` command).
 
 ```
-$ wget https://github.com/singularityware/singularity/releases/download/2.3/singularity-2.3.tar.gz
+$ wget https://github.com/singularityware/singularity/releases/download/2.4/singularity-2.4.tar.gz
 
 $ tar xvf singularity-2.4.tar.gz
 ```
