@@ -96,7 +96,7 @@ Singularity assumes ([more or less](http://containers-ftw.org/SCI-F/)) that each
 Singularity shines for scientific software running in an HPC environent.  We will use it for the remainder of the class.
 
 ### Install
-Here we will install the latest tagged release from [GitHub](https://github.com/singularityware/singularity). If you prefer to install a different version or to install Singularity in a different location, see these [Singularity docs](http://singularity.lbl.gov/docs-quick-start-installation).
+Here we will install the latest tagged release from [GitHub](https://github.com/singularityware/singularity). If you prefer to install a different version or to install Singularity in a different location, see these [Singularity docs](http://singularity.lbl.gov/docs-installation).
 
 We're going to compile Singularity from source code.  First we'll need to make sure we have some development tools installed so that we can do that.  On Ubuntu, run these commands to make sure you have all the necessary packages installed.
 
