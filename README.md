@@ -523,10 +523,10 @@ $ cat output
 
 This _works..._ but the syntax is ugly and difficult to remember.  
 
-One neat singularity trick is to make a container function as though it were an executable.  To do that, we need to create a runscript inside the container. It turns out that our lolcat.def file already builds a runscript into our container for us.
+Singularity supports a neat trick for making a container function as though it were an executable.  We need to create a **runscript** inside the container. It turns out that our Singularity recipe file already contains a runscript.  It causes our container to print a helpful message.  
 
 ```
-$ ./lolcow.img
+$ ./lolcow.simg
 This is what happens when you run the container...
 ```
 
