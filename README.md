@@ -272,7 +272,7 @@ This is one of the core features of Singularity that makes it so attractive from
 Let's try installing some software. I used the programs `fortune`, `cowsay`, and `lolcat` to produce the container that we saw in the first demo.
 
 ```
-$ sudo apt-get update && sudo apt-get install fortune cowsay lolcat
+$ sudo apt-get -y update && sudo apt-get -y install fortune cowsay lolcat
 bash: sudo: command not found
 ```
 
