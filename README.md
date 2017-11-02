@@ -218,17 +218,15 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
 See the [Singularity docs](http://singularity.lbl.gov/docs-recipes) for an explanation of each of these sections.
 
-Now let's rename this file so we don't get confused and use it as a starting point to build our `lolcow.img` container. Note that the build command requires `sudo` privileges, when used in combination with a recipe file. 
+Now let's use this recipe file as a starting point to build our `lolcow.img` container. Note that the build command requires `sudo` privileges, when used in combination with a recipe file. 
 
 ```
-$ mv Singularity lolcow.def
-
-$ sudo singularity build --sandbox lolcow.img lolcow.def
+$ sudo singularity build --sandbox lolcow Singularity
 ```
 
-Note the `--sandbox` option.  Singularity can build containers in several different file formats. The default is to build a [squashfs](https://en.wikipedia.org/wiki/SquashFS) image. The squashfs format is compressed and immutable making it a good choice for reproducible, production-grade containers.  But if you want to shell into a container and tinker with it, you should build a sandbox (which is really just a directory).  This is great when you are still developing your container and don't yet know what should be included in the recipe file.  
+The `--sandbox` option in the command above tells Singularity that we want to build a special type of container for development purposes.  Singularity can build containers in several different file formats. The default is to build a [squashfs](https://en.wikipedia.org/wiki/SquashFS) image. The squashfs format is compressed and immutable making it a good choice for reproducible, production-grade containers.  But if you want to shell into a container and tinker with it, you should build a sandbox (which is really just a directory).  This is great when you are still developing your container and don't yet know what should be included in the recipe file.  
 
-When your build finishes you will have a basic Ubuntu container saved in a local directory.
+When your build finishes, you will have a basic Ubuntu container saved in a local directory called `lolcow`.
 
 ### Using `shell` to explore and modify containers
 
