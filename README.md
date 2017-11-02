@@ -261,8 +261,10 @@ Let's try a few more commands:
 
 ```
 $ whoami
+dave
 
 $ hostname
+hal-9000
 ```
 
 This is one of the core features of Singularity that makes it so attractive from a security standpoint.  The user (along with all groups/permissions etc.) remains the same inside and outside of the container. 
