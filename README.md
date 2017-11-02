@@ -669,7 +669,7 @@ But that's a cumbersome command.  Instead, we could set the variable `$SINGULARI
 ```
 $ export SINGULARITY_BINDPATH=/data:/mnt
 
-$ ./lolcow.simg /data/output3 /data/metacow2
+$ ./lolcow.simg /mnt/output3 /mnt/metacow2
 
 $ ls -l /data/
 total 12
