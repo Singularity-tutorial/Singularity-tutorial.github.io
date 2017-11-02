@@ -718,19 +718,26 @@ We can use the `instance.list` command to show the instances that are currently 
 
 ```
 $ singularity instance.list 
+DAEMON NAME      PID      CONTAINER IMAGE
+cow1             10794    /home/dave/lolcow.simg
 ```
 
 We can connect to running instances using the `instance://` URI like so:
 
 ```
 $ singularity shell instance://cow1
+Singularity: Invoking an interactive shell within container...
 
 $ ps -ef 
+UID        PID  PPID  C STIME TTY          TIME CMD
+dave         1     0  0 19:05 ?        00:00:00 singularity-instance: dave [cow1]
+dave         3     0  0 19:06 pts/0    00:00:00 /bin/bash --norc
+dave         4     3  0 19:06 pts/0    00:00:00 ps -ef
 
 $ exit
 ```
 
-Note that we've entered a new PID namespace, so that the Singularity controlled `sinit` process has PID number 1. 
+Note that we've entered a new PID namespace, so that the `singularity-instance` process has PID number 1. 
 
 You can start multiple instances running in the background, as long as you give them unique names.
 
