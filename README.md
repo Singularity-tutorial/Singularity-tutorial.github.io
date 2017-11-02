@@ -237,7 +237,7 @@ When your build finishes, you will have a basic Ubuntu container saved in a loca
 Now let's enter our new container and look around.  
 
 ```
-$ singularity shell lolcow.img
+$ singularity shell lolcow
 ```
 
 Depending on the environment on your host system you may see your prompt change. Let's look at what OS is running inside the container.
