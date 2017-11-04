@@ -276,7 +276,7 @@ This is one of the core features of Singularity that makes it so attractive from
 Let's try installing some software. I used the programs `fortune`, `cowsay`, and `lolcat` to produce the container that we saw in the first demo.
 
 ```
-$ sudo apt-get update && sudo apt-get -y install fortune cowsay lolcat
+Singularity lolcow:~> sudo apt-get update && sudo apt-get -y install fortune cowsay lolcat
 bash: sudo: command not found
 ```
 
@@ -289,7 +289,7 @@ Once again, this is an important concept in Singularity.  If you enter a contain
 Let's exit the container and re-enter as root.
 
 ```
-$ exit
+Singularity lolcow:~> exit
 
 $ sudo singularity shell --writable lolcow
 ```
@@ -299,13 +299,13 @@ Now we are the root user inside the container. Note also the addition of the `--
 Let's try installing some software again.
 
 ```
-$ apt-get update && apt-get -y install fortune cowsay lolcat
+Singularity lolcow:~> apt-get update && apt-get -y install fortune cowsay lolcat
 ```
 
 Now you should see the programs successfully installed.  Let's try running the demo in this new container.
 
 ```
-$ fortune | cowsay | lolcat
+Singularity lolcow:~> fortune | cowsay | lolcat
 bash: lolcat: command not found
 bash: cowsay: command not found
 bash: fortune: command not found
@@ -314,9 +314,9 @@ bash: fortune: command not found
 Drat! It looks like the programs were not added to our `$PATH`.  Let's add them and try again.
 
 ```
-$ export PATH=/usr/games:$PATH
+Singularity lolcow:~> export PATH=/usr/games:$PATH
 
-$ fortune | cowsay | lolcat
+Singularity lolcow:~> fortune | cowsay | lolcat
 perl: warning: Setting locale failed.
 perl: warning: Please check that your locale settings:
         LANGUAGE = (unset),
@@ -342,9 +342,9 @@ We changed our path in this session, but those changes will disappear as soon as
 Now back to our perl warning.  Perl is complaining that the locale is not set properly.  Basically, perl wants to know where you are and what sort of language encoding it should use.  Should you encounter this warning you can  probably fix it with the `locale-gen` command or by setting `LC_ALL=C`.  Here we'll just set the environment variable.
 
 ```
-$ export LC_ALL=C
+Singularity lolcow:~> export LC_ALL=C
 
-$ fortune | cowsay | lolcat
+Singularity lolcow:~> fortune | cowsay | lolcat
  _________________________________________
 / FORTUNE PROVIDES QUESTIONS FOR THE      \
 | GREAT ANSWERS: #19 A: To be or not to   |
@@ -364,7 +364,7 @@ Although it is fine to shell into your Singularity container and make changes wh
 Let's update our definition file with the changes we made to this container.
 
 ```
-$ exit
+Singularity lolcow:~> exit
 
 $ nano Singularity
 ```
