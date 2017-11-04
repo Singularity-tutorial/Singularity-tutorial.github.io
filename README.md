@@ -247,7 +247,7 @@ $ singularity shell lolcow
 Depending on the environment on your host system you may see your prompt change. Let's look at what OS is running inside the container.
 
 ```
-$ cat /etc/os-release
+Singularity lolcow:~> cat /etc/os-release
 NAME="Ubuntu"
 VERSION="14.04, Trusty Tahr"
 ID=ubuntu
@@ -264,10 +264,10 @@ No matter what OS is running on your host, your container is running Ubuntu 14.0
 Let's try a few more commands:
 
 ```
-$ whoami
+Singularity lolcow:~> whoami
 dave
 
-$ hostname
+Singularity lolcow:~> hostname
 hal-9000
 ```
 
@@ -594,12 +594,12 @@ Let's be more explicit. Consider this example.
 ```
 $ singularity shell lolcow.simg
 
-$ echo wutini > ~/jawa.sez
+Singularity lolcow.simg:~> echo wutini > ~/jawa.sez
 
-$ cat ~/jawa.sez
+Singularity lolcow.simg:~> cat ~/jawa.sez
 wutini
 
-$ exit
+Singularity lolcow.simg:~> exit
 
 $ cat ~/jawa.sez
 wutini
@@ -727,13 +727,13 @@ We can connect to running instances using the `instance://` URI like so:
 $ singularity shell instance://cow1
 Singularity: Invoking an interactive shell within container...
 
-$ ps -ef 
+Singularity lolcow.simg:~> ps -ef
 UID        PID  PPID  C STIME TTY          TIME CMD
 dave         1     0  0 19:05 ?        00:00:00 singularity-instance: dave [cow1]
 dave         3     0  0 19:06 pts/0    00:00:00 /bin/bash --norc
 dave         4     3  0 19:06 pts/0    00:00:00 ps -ef
 
-$ exit
+Singularity lolcow.simg:~> exit
 ```
 
 Note that we've entered a new PID namespace, so that the `singularity-instance` process has PID number 1. 
@@ -845,13 +845,13 @@ You can build and host your own images on Docker Hub, (using Docker) or you can 
 ```
 $ singularity shell docker://tensorflow/tensorflow
 
-$ python
+Singularity tensorflow:~> python
 
 >>> import tensorflow as tf
 
 >>> quit()
 
-$ exit
+Singularity tensorflow:~> exit
 ```
 
 You can also build, download, and run containers from [Singularity Hub](https://singularity-hub.org/)
