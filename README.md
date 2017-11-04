@@ -192,7 +192,11 @@ To build a singularity container, you must use the `build` command.  The `build`
 The Singularity source code contains several example definition files in the `/examples` subdirectory.  Let's copy the ubuntu example to our home directory and inspect it.
 
 ```
-$ cp singularity-2.4/examples/ubuntu/Singularity .
+$ mkdir ../lolcow
+
+$ cp examples/ubuntu/Singularity ../lolcow/
+
+$ cd ../lolcow
 
 $ nano Singularity
 ```
