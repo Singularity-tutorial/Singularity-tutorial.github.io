@@ -487,7 +487,7 @@ We've created a meta-cow (a cow that talks about cows). :stuck_out_tongue_winkin
 
 ## Hour 3 (advanced Singularity usage)
 
-### Making containerized apps behave more like normal apps
+### The Runscript: Making containerized apps behave more like normal apps
 
 In the third hour we are going to consider an extended example describing a containerized application that takes a file as input, analyzes the data in the file, and produces another file as output.  This is obviously a very common situation.  
 
