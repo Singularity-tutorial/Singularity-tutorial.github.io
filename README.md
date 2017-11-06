@@ -107,7 +107,7 @@ We're going to compile Singularity from source code.  First we'll need to make s
 ```
 $ sudo apt-get update
 
-$ sudo apt-get -y install python dh-autoreconf build-essential debootstrap
+$ sudo apt-get -y install python build-essential debootstrap
 ```
 
 On CentOS, these commmands should get you up to speed.
