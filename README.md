@@ -216,7 +216,7 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
-    apt-get -y install vim
+    apt-get -y --force-yes install vim
 
 ```
 
@@ -385,7 +385,8 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
     apt-get update
-    apt-get -y install vim fortune cowsay lolcat
+    apt-get -y install fortune cowsay lolcat
+	apt-get clean
 
 %environment
     export PATH=/usr/games:$PATH
@@ -550,7 +551,8 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
     apt-get update
-    apt-get -y install vim fortune cowsay lolcat
+    apt-get -y install fortune cowsay lolcat
+	apt-get clean
 
 %environment
     export PATH=/usr/games:$PATH
