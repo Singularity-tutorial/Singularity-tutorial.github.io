@@ -386,7 +386,7 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     sed -i 's/$/ universe/' /etc/apt/sources.list
     apt-get update
     apt-get -y install fortune cowsay lolcat
-	apt-get clean
+    apt-get clean
 
 %environment
     export PATH=/usr/games:$PATH
@@ -552,7 +552,7 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     sed -i 's/$/ universe/' /etc/apt/sources.list
     apt-get update
     apt-get -y install fortune cowsay lolcat
-	apt-get clean
+    apt-get clean
 
 %environment
     export PATH=/usr/games:$PATH
