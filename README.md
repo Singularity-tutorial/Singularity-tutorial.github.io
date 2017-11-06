@@ -540,12 +540,38 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
 
 %runscript
-    #!/bin/bash
-    if [ $# -ne 2 ]; then
-        echo "Please provide an input and an output file."
+    infile=
+    outfile=
+
+    usage() {
+        >&2 echo "Usage:"
+        >&2 echo "$SINGULARITY_NAME -i <infile> -o <outfile> [ -- <cowsay options> ]"
         exit 1
+    }
+
+    while getopts i:o: argument
+    do
+        case $argument in
+        i)
+            infile="$OPTARG"
+            ;;
+        o)
+            outfile="$OPTARG"
+            ;;
+        ?)
+            usage
+            ;;
+        esac
+    done
+
+    shift "$((OPTIND - 1))"
+
+    if [ -z "$infile" ] || [ -z "$outfile" ]
+    then
+        usage
     fi
-    cat $1 | cowsay > $2
+
+    cat "$infile" | cowsay "$@" > "$outfile"
 
 %post
     echo "Hello from inside the container"
@@ -567,13 +593,14 @@ $ sudo singularity build --force lolcow.simg Singularity
 
 Note the `--force` option which ensures our previous container is completely overwritten.
 
-After rebuilding our container, we can call the lolcow.simg as though it were an executable, and simply give it two arguments.  One for input and one for output.  
+After rebuilding our container, we can call the lolcow.simg as though it were an executable, give it input and output file names, and optionally give additional arguments to go directly to the `cowsay` program.  
 
 ```
 $ ./lolcow.simg
-Please provide an input and an output file.
+Usage:
+lolcow.simg -i <infile> -o <outfile> [ -- <cowsay options> ]
 
-$ ./lolcow.simg input output2
+$ ./lolcow.simg -i input -o output2
 
 $ cat output2
  ______________________________________
@@ -652,7 +679,7 @@ Now the `/mnt` directory in the container is bind mounted to the `/data` directo
 Now what about our earlier example in which we used a runscript to run a our container as though it were an executable?  The `singularity run` command  accepts the `--bind` option and can execute our runscript like so.
 
 ```
-$ singularity run --bind /data:/mnt lolcow.simg /mnt/vader.txt /mnt/output3
+$ singularity run --bind /data:/mnt lolcow.simg -i /mnt/vader.txt -o /mnt/output3
 
 $ cat /data/output3
  __________________
@@ -667,10 +694,11 @@ $ cat /data/output3
 
 But that's a cumbersome command.  Instead, we could set the variable `$SINGULARITY_BINDPATH` and then use our container as before.
 
+
 ```
 $ export SINGULARITY_BINDPATH=/data:/mnt
 
-$ ./lolcow.simg /mnt/output3 /mnt/metacow2
+$ ./lolcow.simg -i /mnt/output3 -o /mnt/metacow2 -- -n
 
 $ ls -l /data/
 total 12
@@ -679,22 +707,16 @@ total 12
 -rw-rw-r-- 1 ubuntu ubuntu  17 Jun  7 20:57 vader.txt
 
 $ cat /data/metacow2
- ________________________________________
-/  __________________ < I am your father \
-| >                                      |
-|                                        |
-| ------------------                     |
-|                                        |
-| \ ^__^                                 |
-|                                        |
-| \ (oo)\_______                         |
-|                                        |
-| (__)\ )\/\                             |
-|                                        |
-| ||----w |                              |
-|                                        |
-\ || ||                                  /
- ----------------------------------------
+ ______________________________
+/  __________________          \
+| < I am your father >         |
+|  ------------------          |
+|         \   ^__^             |
+|          \  (oo)\_______     |
+|             (__)\       )\/\ |
+|                 ||----w |    |
+\                 ||     ||    /
+ ------------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
