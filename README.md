@@ -596,14 +596,14 @@ Let's be more explicit. Consider this example.
 ```
 $ singularity shell lolcow.simg
 
-Singularity lolcow.simg:~> echo wutini > ~/jawa.sez
+Singularity lolcow.simg:~> echo wutini > ~/jawa.txt
 
-Singularity lolcow.simg:~> cat ~/jawa.sez
+Singularity lolcow.simg:~> cat ~/jawa.txt
 wutini
 
 Singularity lolcow.simg:~> exit
 
-$ cat ~/jawa.sez
+$ cat ~/jawa.txt
 wutini
 ```
 
@@ -627,7 +627,7 @@ $ sudo mkdir /data
 
 $ sudo chown $USER:$USER /data
 
-$ echo 'I am your father' > /data/vader.sez
+$ echo 'I am your father' > /data/vader.txt
 ```
 
 We also need a directory _within_ our container where we can bind mount the host system `/data` directory.  We could create another directory in the `%post` section of our recipe file and rebuild the container, but our container already has a directory called `/mnt` that we can use for this example. 
@@ -644,7 +644,7 @@ The `/mnt` directory within the container is empty.  Now let's repeat the same c
 ```
 $ singularity exec --bind /data:/mnt lolcow.simg ls -l /mnt
 total 4
--rw-rw-r-- 1 ubuntu ubuntu 17 Jun  7 20:57 vader.sez
+-rw-rw-r-- 1 ubuntu ubuntu 17 Jun  7 20:57 vader.txt
 ```
 
 Now the `/mnt` directory in the container is bind mounted to the `/data` directory on the host system and we can see its contents.  
@@ -652,7 +652,7 @@ Now the `/mnt` directory in the container is bind mounted to the `/data` directo
 Now what about our earlier example in which we used a runscript to run a our container as though it were an executable?  The `singularity run` command  accepts the `--bind` option and can execute our runscript like so.
 
 ```
-$ singularity run --bind /data:/mnt lolcow.simg /mnt/vader.sez /mnt/output3
+$ singularity run --bind /data:/mnt lolcow.simg /mnt/vader.txt /mnt/output3
 
 $ cat /data/output3
  __________________
@@ -676,7 +676,7 @@ $ ls -l /data/
 total 12
 -rw-rw-r-- 1 ubuntu ubuntu 809 Jun  7 21:07 metacow2
 -rw-rw-r-- 1 ubuntu ubuntu 184 Jun  7 21:06 output3
--rw-rw-r-- 1 ubuntu ubuntu  17 Jun  7 20:57 vader.sez
+-rw-rw-r-- 1 ubuntu ubuntu  17 Jun  7 20:57 vader.txt
 
 $ cat /data/metacow2
  ________________________________________
