@@ -801,10 +801,10 @@ Both Docker Hub and Singularity Hub link to your GitHub account. New container b
 
 ### pipes and redirection
 
-As we demonstrated earlier, pipes and redirects work as expected between a container and host system.  If you need to pipe the output of one command in your container to another command in your container things may be more complicated.
+As we demonstrated earlier, pipes and redirects work as expected between a container and host system.  If you need to pipe the output of one command in your container to another command in your container things are slightly more complicated.
 
 ```
-$ singularity exec lolcow.img fortune | singularity exec lolcow.img cowsay
+$ singularity exec lolcow.img sh -c "fortune | cowsay | lolcat"
 ```
 
 ### X11 and OpenGL
