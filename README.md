@@ -639,7 +639,7 @@ Here we shelled into a container and created a file with some text in our home d
 There are several special directories that Singularity _bind mounts_ into
 your container by default.  These include:
 
-- `/home/$USER`
+- `$HOME`
 - `/tmp`
 - `/proc`
 - `/sys`
