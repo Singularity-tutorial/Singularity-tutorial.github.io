@@ -191,6 +191,8 @@ To build a singularity container, you must use the `build` command.  The `build`
 
 The Singularity source code contains several example definition files in the `/examples` subdirectory.  Let's copy the ubuntu example to our home directory and inspect it.
 
+**Note:** You need to build containers on a file system where the sudo command can write files as root. This may not work in an HPC cluster setting if your home directory resides on a shared file server. If that's the case you may have to to `cd` to a local hard disk such as `/tmp`.
+
 ```
 $ mkdir ../lolcow
 
