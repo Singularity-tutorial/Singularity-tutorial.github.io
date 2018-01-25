@@ -54,7 +54,8 @@ Because of their differences, VMs and containers serve different purposes and sh
 
 Docker is built for running multiple containers on a single system and it allows containers to share common software features for efficiency.  It also seeks to fully isolate each container from all other containers and from the host system.  
 
-Docker assumes that you will be a root user.  Or that it will be OK for you to elevate your privileges if you are not a root user.    
+Docker assumes that you will be a root user.  Or that it will be OK for you to elevate your privileges if you are not a root user.
+See https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface for details.
 
 **strengths**
 
