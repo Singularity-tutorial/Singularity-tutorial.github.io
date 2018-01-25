@@ -87,7 +87,7 @@ Singularity assumes that you will have a build system where you are the root use
 
 **strengths**
 - Easy to learn and use (relatively speaking)
-- Approved for HPC (installed on some of the biggest HPC systems in the world)
+- Approved for HPC ([installed on some of the biggest HPC systems in the world](http://singularity.lbl.gov/citation-registration#clusters))
 - Can convert Docker containers to Singularity and run containers directly from Docker Hub
 - [Singularity Hub](https://singularity-hub.org/)!
     - A place to build and host your containers similar to Docker Hub
