@@ -206,7 +206,7 @@ Edit it until it looks like this:
 
 ```
 BootStrap: debootstrap
-OSVersion: trusty
+OSVersion: xenial
 MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
 
@@ -252,17 +252,18 @@ Depending on the environment on your host system you may see your prompt change.
 ```
 Singularity lolcow:~> cat /etc/os-release
 NAME="Ubuntu"
-VERSION="14.04, Trusty Tahr"
+VERSION="16.04 LTS (Xenial Xerus)"
 ID=ubuntu
 ID_LIKE=debian
-PRETTY_NAME="Ubuntu 14.04 LTS"
-VERSION_ID="14.04"
+PRETTY_NAME="Ubuntu 16.04 LTS"
+VERSION_ID="16.04"
 HOME_URL="http://www.ubuntu.com/"
 SUPPORT_URL="http://help.ubuntu.com/"
 BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
+UBUNTU_CODENAME=xenial
 ```
 
-No matter what OS is running on your host, your container is running Ubuntu 14.04!
+No matter what OS is running on your host, your container is running Ubuntu 16.04!
 
 Let's try a few more commands:
 
@@ -376,7 +377,7 @@ Here is what our updated definition file should look like.
 
 ```
 BootStrap: debootstrap
-OSVersion: trusty
+OSVersion: xenial
 MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
 
@@ -409,7 +410,7 @@ Singularity stores a lot of [useful metadata](http://singularity.lbl.gov/docs-en
 ```
 $ singularity inspect --deffile lolcow.simg
 BootStrap: debootstrap
-OSVersion: trusty
+OSVersion: xenial
 MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
 
@@ -538,7 +539,7 @@ so that it does something more useful.
 
 ```
 BootStrap: debootstrap
-OSVersion: trusty
+OSVersion: xenial
 MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
 
