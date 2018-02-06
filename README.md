@@ -126,15 +126,15 @@ $ sudo yum install debootstrap.noarch squashfs-tools
 Next we'll download a compressed archive of the source code (using the the `wget` command). Then we'll extract the source code from the archive (with the `tar` command).
 
 ```
-$ wget https://github.com/singularityware/singularity/releases/download/2.4/singularity-2.4.tar.gz
+$ wget https://github.com/singularityware/singularity/releases/download/2.4.2/singularity-2.4.2.tar.gz
 
-$ tar xvf singularity-2.4.tar.gz
+$ tar -xf singularity-2.4.2.tar.gz
 ```
 
 Finally it's time to build and install!
 
 ```
-$ cd singularity-2.4
+$ cd singularity-2.4.2
 
 $ ./configure --prefix=/usr/local
 
