@@ -202,7 +202,7 @@ $ cd ../lolcow
 $ nano Singularity
 ```
 
-It should look something like this:
+Edit it until it looks like this:
 
 ```
 BootStrap: debootstrap
@@ -217,7 +217,9 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
-    apt-get -y --force-yes install vim
+    apt-get update
+    apt-get -y install vim
+    apt-get clean
 
 ```
 
