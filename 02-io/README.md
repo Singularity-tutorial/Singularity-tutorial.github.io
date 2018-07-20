@@ -58,3 +58,14 @@ $ cat cowsaid | singularity exec lolcow.simg cowsay -n
 ```
 
 We've created a meta-cow (a cow that talks about cows). :stuck_out_tongue_winking_eye:
+
+
+So pipes and redirects work as expected between a container and the host system.
+if, however, you need to pipe the output of one command in your container to another command in your container, things are slightly more complicated.
+Pipes and redirects are shell constructs, so if you don't want your host shell to interpret them, you have to hide them from it.
+
+```
+$ singularity exec lolcow.img sh -c "fortune | cowsay | lolcat"
+```
+
+The above invokes a new shell, but inside the container, and tells it to run the single command line `fortune | cowsay | lolcat`.

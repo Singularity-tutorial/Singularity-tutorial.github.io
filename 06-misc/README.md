@@ -1,13 +1,5 @@
 ## Miscellaneous Topics
 
-### pipes and redirection
-
-As we demonstrated earlier, pipes and redirects work as expected between a container and host system.  If you need to pipe the output of one command in your container to another command in your container things are slightly more complicated.
-
-```
-$ singularity exec lolcow.img sh -c "fortune | cowsay | lolcat"
-```
-
 ### X11 and OpenGL
 
 You can use Singularity containers to display graphics through common protocols. To do this, you need to install the proper graphics stack within the Singularity container.  For instance if you want to display X11 graphics you must install `xorg` within your container.  In an Ubuntu container the command would look like this.  
