@@ -1,11 +1,6 @@
-## Hour 2 (Building and Running Containers)
+# Building a basic container
 
-In the second hour we will build the preceding container from scratch. 
-
-Simply typing `singularity` will give you an summary of all the commands you can use. Typing `singularity help <command>` will give you more detailed information about running an individual command.
-
-### Building a basic container
-
+In this exercise, we will build a container from scratch similar to the one we used to test the installation.
 To build a singularity container, you must use the `build` command.  The `build` command installs an OS, sets up your container's environment and installs the apps you need.  To use the `build` command, we need a **recipe file** (also called a definition file). A Singularity recipe file is a set of instructions telling Singularity what software to install in the container.
 
 The Singularity source code contains several example definition files in the `/examples` subdirectory.  Let's copy the ubuntu example to our home directory and inspect it.
@@ -57,7 +52,7 @@ But if you want to shell into a container and tinker with it (like we will do he
 
 When your build finishes, you will have a basic Ubuntu container saved in a local directory called `lolcow`.
 
-### Using `shell` to explore and modify containers
+# Using `shell` to explore and modify containers
 
 Now let's enter our new container and look around.  
 

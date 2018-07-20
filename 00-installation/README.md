@@ -1,4 +1,4 @@
-### Install
+# Installing Singularity
 Here we will install the latest tagged release from [GitHub](https://github.com/singularityware/singularity). If you prefer to install a different version or to install Singularity in a different location, see these [Singularity docs](http://singularity.lbl.gov/docs-installation).
 
 We're going to compile Singularity from source code.  First we'll need to make sure we have some development tools installed so that we can do that.  On Ubuntu, run these commands to make sure you have all the necessary packages installed.
@@ -49,7 +49,11 @@ $ . etc/bash_completion.d/singularity
 $ sudo cp etc/bash_completion.d/singularity /etc/bash_completion.d/
 ```
 
-If everything went according to plan, you now have a working installation of Singularity.  You can test your installation like so:
+If everything went according to plan, you now have a working installation of Singularity.
+Simply typing `singularity` will give you a summary of all the commands you can use.
+Typing `singularity help <command>` will give you more detailed information about running an individual command.
+
+You can test your installation like so:
 
 ```
 $ singularity run docker://godlovedc/lolcow
@@ -75,4 +79,5 @@ Creating container runtime...
 
 Your cow will likely say something different (and be more colorful), but as long as you see a cow your installation is working properly.  
 
-This command downloads and runs a container from [Docker Hub](https://hub.docker.com/r/godlovedc/lolcow/).  During the next hour we will learn how to build a similar container from scratch.  
+This command downloads, converts, and runs a container from [Docker Hub](https://hub.docker.com/r/godlovedc/lolcow/).
+In the next exercise, we will learn how to build a similar container from scratch.

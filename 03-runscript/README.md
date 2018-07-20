@@ -1,8 +1,7 @@
-## Hour 3 (advanced Singularity usage)
+# The Runscript: Making containerized apps behave more like normal apps
 
-### The Runscript: Making containerized apps behave more like normal apps
-
-In the third hour we are going to consider an extended example describing a containerized application that takes a file as input, analyzes the data in the file, and produces another file as output.  This is obviously a very common situation.  
+We are now going to consider an extended example describing a containerized application that takes a file as input, analyzes the data in the file, and produces another file as output.
+This is obviously a very common situation.
 
 Let's imagine that we want to use the cowsay program in our `lolcow.simg` to "analyze data".  We should give our container an input file, it should reformat it (in the form of a cow speaking), and it should dump the output into another file.  
 

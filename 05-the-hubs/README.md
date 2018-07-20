@@ -1,4 +1,4 @@
-### Singularity Hub and Docker Hub
+# Singularity Hub and Docker Hub
 
 We've spent a lot of time on building and using your own containers so that you understand how Singularity works. But there's an easier way! [Docker Hub](https://hub.docker.com/)
 hosts over 100,000 pre-built, ready-to-use containers.  And singularity makes it easy to use them.

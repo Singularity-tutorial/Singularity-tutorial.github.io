@@ -11,9 +11,7 @@ This is an introductory workshop on Singularity. It was originally taught by Dav
 - [Singularity Hub](https://singularity-hub.org/)
 - [Docker Hub](https://hub.docker.com/)
 
-## Hour 1 (Introduction and Installation)
-
-### What IS a software container anyway? (And what's it good for?)
+## What IS a software container anyway? (And what's it good for?)
 
 A container allows you to stick an application and all of its dependencies into a single package.  This makes your application portable, shareable, and reproducible.
 
@@ -28,7 +26,7 @@ Here are some examples of things you can do with containers:
 - Install and run an application that requires a complicated stack of dependencies with a few keystrokes.
 - Create a pipeline or complex workflow where each individual program is meant to run on a different operating system.
 
-### How do containers differ from virtual machines (VMs)
+## How do containers differ from virtual machines (VMs)
 
 Containers and VMs are both types of virtualization.  But it's important to understand the differences between the two and know when to use each.
 
@@ -46,7 +44,7 @@ Because of their differences, VMs and containers serve different purposes and sh
 - VMs are good for long running interactive sessions where you may want to use several different applications.  (Checking email on Outlook and using Microsoft Word and Excel).
 - Containers are better suited to running one or two applications non-interactively in their own custom environments.
 
-### Docker
+## Docker
 
 [Docker](https://www.docker.com/) is currently the most widely used container software.  It has several strengths and weaknesses that make it a good choice for some projects but not for others.
 
@@ -77,7 +75,7 @@ See https://docs.docker.com/engine/security/security/#docker-daemon-attack-surfa
 
 Docker shines for DevOPs teams providing cloud-hosted micro-services to users.
 
-### Singularity 
+## Singularity
 
 [Singularity](http://singularity.lbl.gov/) is a relatively new container software originally developed by Greg Kurtzer while at Lawrence Berkley National labs.  It was developed with security, scientific software, and HPC systems in mind.  
 

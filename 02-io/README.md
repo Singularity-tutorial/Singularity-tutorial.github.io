@@ -1,4 +1,4 @@
-### Blurring the line between the container and the host system.
+# Blurring the line between the container and the host system
 
 Singularity does not try to isolate your container completely from the host system.  This allows you to do some interesting things.
 
