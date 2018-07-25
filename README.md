@@ -897,6 +897,272 @@ Both Docker Hub and Singularity Hub link to your GitHub account. New container b
 
 ## Miscellaneous Topics
 
+### details of the Singularity security model
+
+Disclaimer: Many of the things in this section are remarkably bad practices.  They are just here to illustrate examples.  Don't try them outside of this context.  Maybe don't actually try them inside of this context either.
+
+Let's say that you want to run a command as root inside of a Singularity container.  
+
+```
+$ singularity exec docker://ubuntu sudo whoami
+[...snip...]
+/.singularity.d/actions/exec: 9: exec: sudo: not found
+```
+
+Whoops! The `sudo` program is not installed.  Let's build the container as a sandbox and install it. Obviously, we must do so as root:
+
+```
+$ sudo singularity build --sandbox backdoor.simg docker://ubuntu
+
+$ sudo singularity shell --writable backdoor.simg
+
+Singularity backdoor.simg:~> apt-get update && apt-get install -y sudo
+
+Singularity backdoor.simg:~> which sudo
+/usr/bin/sudo
+```
+
+And we'll also make it so that our normal user can run all commands via `sudo` without a password.  (Note this renders the container non-portable but pretty much all of this is a terrible idea anyway.)
+
+```
+Singularity backdoor.simg:~> echo "student ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers
+
+Singularity backdoor.simg:~> exit
+```
+
+Now we _should_ be able to use `sudo` to escalate privs inside of a container as the student user. 
+
+Right?
+
+```
+$ singularity exec backdoor.simg sudo whoami
+sudo: effective uid is not 0, is /usr/bin/sudo on a file system with the 'nosuid' option set or an NFS file system without root privileges?
+```
+
+Wrong. :-(
+
+The error should give us a hint.  But let's try a few more things before we give up.  
+
+An easier solution might just be to create a root password.  By defualt, Ubuntu does not have a root password, but once we add one we should be able to become root with `su`.
+
+```
+$ sudo singularity shell --writable backdoor.simg
+
+Singularity backdoor.simg:~> passwd root
+Enter new UNIX password:
+Retype new UNIX password:
+passwd: password updated successfully
+
+Singularity backdoor.simg:~> exit
+```
+
+I just set it to `password` so it would be easy to remember.  Now I'm ready to shell in and use `su` to become root.
+
+```
+$ singularity shell backdoor.simg
+Singularity: Invoking an interactive shell within container...
+
+Singularity backdoor.simg:~> su -
+Password:
+su: Authentication failure
+
+Singularity backdoor.simg:~> whoami
+student
+
+Singularity backdoor.simg:~> exit
+```
+
+I entered the correct password, but I still am not root!
+
+One more try before we give up.  Let's write our own sudo program!  (Disclaimer: This is a terrible idea.)
+
+For this to work, we need to write a little C. 
+
+```C
+/*
+If this program is compiled, chowned to root, and the set-user-id bit is set, 
+it will take a single string as input and execute the string as a command with 
+root privs. :-O
+*/
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char** argv) {
+
+    if ( argc == 1 || argc > 2 ) {
+        printf("ERROR: %s requires exactly 1 argument\n", argv[0]);
+        return 1;
+    }
+
+    if ( setuid(0) != 0 ) {
+        printf("ERROR: failed to set effective user id to 0 (root)\n");
+        return 1;
+    }
+
+    if ( system(argv[1]) != 0 ) {
+        printf("ERROR: failed to execute command '%s'\n", argv[1]);
+        return 1;
+    }
+
+    return 0;
+}
+```
+
+Save this text into a file called `my_sudo.c`, and compile it like so:
+
+Now if you compile the program, `chown` the resulting binary to `root` and add the user `SUID` bit, you will have a program that takes a single string argument, elevates the user's permissions to root, and executes it.  
+
+Now just to state the obvious, this is a dangerous program to have around.  You probably do NOT want to actually try this just in case you make a mistake and this ugly program ends up on your system somewhere.  Just read the tutorial and take my word for it. 
+
+I'll install this program within the container being careful to compile it within the container (even though in this case the container is just a bare directory so we will still need to remove it later).
+
+```
+$ cp my_sudo.c /tmp/
+
+$ sudo singularity shell --writable backdoor.simg/
+
+Singularity backdoor.simg:~> apt-get install gcc
+
+Singularity backdoor.simg:~> mv /tmp/my_sudo.c /bin/
+
+Singularity backdoor.simg:~> cc /bin/my_sudo.c -o /bin/my_sudo
+
+Singularity backdoor.simg:~> chmod u+s /bin/my_sudo
+
+Singularity backdoor.simg:~> ls -l /bin/my_sudo
+-rwsr-xr-x 1 root root 8424 Jul 25 02:28 /bin/my_sudo
+
+Singularity backdoor.simg:~> exit
+```
+
+The dirty little program is now set up and ready to go inside of the container at `/bin/my_sudo`.  I should be able use it to elevate my privs.
+
+```
+$ singularity exec backdoor.simg my_sudo whoami
+ERROR: failed to set effective user id to 0 (root)
+```
+
+Nope!  Even trying explicitly to create an exploit in this way does not work.  
+
+Note that in this case we built a sandbox, meaning `backdoor.simg` is just a bare directory.  `my_sudo` exists as an SUID program in that directory.  If we were to call it _outside_ of the context of the Singularity runtime, it would quite happily elevate our privileges.     
+
+```
+$ backdoor.simg/bin/my_sudo whoami
+root
+```
+
+So in this case, the Singularity runtime actually provides an additional layer of security over and above what is provided on the host system.  
+
+*Before proceeding any further, stop and delete this program from your host system if you actually followed this portion of the tutorial.*
+
+```
+$ sudo rm backdoor.simg/bin/my_sudo
+```
+
+These examples should serve to illustrate the guiding security principle of the Singularity runtime.  Singularity allows _untrusted_ users to run _untrusted_ containers safely.  
+
+How does Singularity block privilege escalation inside of the container?  When Singularity runs, it mounts a directory or image containing a file system to a specific location within the root file system and then makes it appear as though this mount is the actual root file system.  Critically, when the container file system is mounted, the `MS_NOSUID` flag is passed to the `mount` program.  This prevents set-user-ID (SUID) and set-group-ID (SGID) bits or file capabilities from being honored when executing programs from the container file system.  
+
+At this point, even if you have never heard of an SUID program you should have an idea how they work.  Setting the SUID bit allows anyone to run a program as though they were the user who owns the program.  That's how we wrote our own `my_sudo` program above.  It turns out that's how programs like `sudo` and `su` work as well.  But you may be surprised to learn that other programs can have the SUID bit set.  For instance, on many systems `ping` must have the SUID bit set because it needs to open a raw socket which is a privileged operation.  This means that `ping` will not work in a Singularity container when the container is run without privileges!  
+
+On some newer systems, `ping` is controlled via Linux file capabilities instead.  Capabilities allow developers to give finer grained control over the privileged processes that are carried out by a program.  In the case of `ping` this allows the program to create raw sockets without granting it additional privileges.  The `MS_NOSUID` flag used by Singularity to mount containers blocks this type of escalation pathway as well.  
+
+You may wonder how Singularity allows you to be the same user inside the container as outside of the container.  Let's continue to examine the `backdoor.simg` image we create above.  Since it's a sandbox (a bare directory) we can just look inside of it.  Let's have a look at the `/etc/passwd` file and `/etc/group` files that determine what users and groups exist on the system respectively.
+
+```
+$ cat backdoor.simg/etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+
+$ cat backdoor.simg/etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+news:x:9:
+uucp:x:10:
+man:x:12:
+proxy:x:13:
+kmem:x:15:
+dialout:x:20:
+fax:x:21:
+voice:x:22:
+cdrom:x:24:
+floppy:x:25:
+tape:x:26:
+sudo:x:27:
+audio:x:29:
+dip:x:30:
+www-data:x:33:
+backup:x:34:
+operator:x:37:
+list:x:38:
+irc:x:39:
+src:x:40:
+gnats:x:41:
+shadow:x:42:
+utmp:x:43:
+video:x:44:
+sasl:x:45:
+plugdev:x:46:
+staff:x:50:
+games:x:60:
+users:x:100:
+nogroup:x:65534:
+```
+
+These are all just generic user and groups that appear in any Ubuntu installation and are necessary to make things work properly.  Now let's shell into the container and look again.
+
+```
+$ singularity shell backdoor.simg
+
+Singularity backdoor.simg:~> tail -n 3 /etc/passwd
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+student:x:1000:1000:,,,:/home/student:/bin/bash
+
+Singularity backdoor.simg:~> tail -n 3 /etc/group
+nogroup:x:65534:
+
+student:x:1000:student
+```
+
+Singularity dynamically appends user and group information to these files at runtime.  That is how we are able to be the same user with the same groups seamlessly inside and outside of the container.  
+
+These are the basic security principles of code running within a Singularity container.  But what about the security of the Singularity program itself running on the host system?
+
+Several privileged operations need to be carried out by the Singularity runtime.  For instance, Singularity must mount the file system contained in an image or directory on behalf of the user.  Other container runtimes handle this privilege escalation by means of a root-owned daemon process that carries out operations on behalf of the user.  This strategy has advantages and disadvantages.  In particular several aspects of this design render it unattractive in an HPC environment.  Most notably, in the context of a batch scheduler such as Slurm or PBS, the root-owned daemon model allows containerized processes to escape control of the resource manager and go rogue on compute nodes.
+
+Singularity uses a program with an SUID bit to elevate privileges for operations such as container mounting.  This method also provides advantages and disadvantages.  The actual Singularity program only runs for tens of milliseconds while it sets up new namespaces, mounts the container file system, and then uses the `exec` program to run a payload within the container.  `exec` exchanges the calling program for the program that is called in memory.  In this way, Singularity effectively execs itself out of existence, and once the containerized program begins to run, no traces of the Singularity program remain.  
+
+SUID bit programs must be designed with great care.  Singularity minimizes the amount of code that is executed with elevated privileges by adopting a model allowing privs to be increased and dropped as needed.  Singularity's execution has been made as transparent as possible so that the code can be audited with ease.  If you execute a Singularity command with the `--debug` option, you will see exactly which operations are carried out with elevated privs.  
+
+
 ### pipes and redirection
 
 As we demonstrated earlier, pipes and redirects work as expected between a container and host system.  If you need to pipe the output of one command in your container to another command in your container things may be more complicated.
