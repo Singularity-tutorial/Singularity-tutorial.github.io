@@ -978,7 +978,7 @@ One more try before we give up.  Let's write our own sudo program!  (Disclaimer:
 
 For this to work, we need to write a little C. 
 
-```C++
+```C
 /*
 If this program is compiled, chowned to root, and the set-user-id bit is set, 
 it will take a single string as input and execute the string as a command with 
