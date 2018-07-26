@@ -90,7 +90,7 @@ MirrorURL: http://ftp.us.debian.org/debian/
     apt-get clean
 
 %environment
-    export PATH=/usr/games:$PATH
+    export PATH=$PATH:/usr/games
     export LC_ALL=C
 ```
 

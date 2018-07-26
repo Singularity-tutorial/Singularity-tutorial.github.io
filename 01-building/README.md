@@ -134,7 +134,7 @@ bash: fortune: command not found
 Drat! It looks like the programs were not added to our `$PATH`.  Let's add them and try again.
 
 ```
-Singularity lolcow:~> export PATH=/usr/games:$PATH
+Singularity lolcow:~> export PATH=$PATH:/usr/games
 
 Singularity lolcow:~> fortune | cowsay | lolcat
 perl: warning: Setting locale failed.
@@ -206,7 +206,7 @@ MirrorURL: http://ftp.us.debian.org/debian/
     apt-get clean
 
 %environment
-    export PATH=/usr/games:$PATH
+    export PATH=$PATH:/usr/games
     export LC_ALL=C
 ```
 
@@ -236,6 +236,6 @@ MirrorURL: http://ftp.us.debian.org/debian/
     apt-get clean
 
 %environment
-    export PATH=/usr/games:$PATH
+    export PATH=$PATH:/usr/games
     export LC_ALL=C
 ```
