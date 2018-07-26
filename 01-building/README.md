@@ -87,13 +87,22 @@ This is one of the core features of Singularity that makes it so attractive from
 Let's try installing some software. I used the programs `fortune`, `cowsay`, and `lolcat` to produce the container that we saw in the first demo.
 
 ```
-Singularity lolcow:~> sudo apt-get update && sudo apt-get -y install fortune cowsay lolcat
-bash: sudo: command not found
+Singularity lolcow:~> apt-get update && apt-get -y install fortune cowsay lolcat
+Reading package lists... Done
+W: chmod 0700 of directory /var/lib/apt/lists/partial failed - SetupAPTPartialDirectory (1: Operation not permitted)
+E: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)
+E: Unable to lock directory /var/lib/apt/lists/
 ```
 
 Whoops!
 
-Singularity complains that it can't find the `sudo` command.  But even if you try to install `sudo` or change to root using `su`, you will find it impossible to elevate your privileges within the container.  
+We don't have permission.
+But even if we had installed `sudo` into the container and tried to run this command with it, or change to root using `su`, we would still find it impossible to elevate our privileges within the container:
+
+```
+Singularity:~> sudo apt-get update
+sudo: effective uid is not 0, is /usr/bin/sudo on a file system with the 'nosuid' option set or an NFS file system without root privileges?
+```
 
 Once again, this is an important concept in Singularity.  If you enter a container without root privileges, you are unable to obtain root privileges within the container.  This insurance against privilege escalation is the reason that you will find Singularity installed in so many HPC environments.  
 
