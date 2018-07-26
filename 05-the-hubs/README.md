@@ -15,6 +15,13 @@ Instead of running this container from Docker Hub, we could also just copy it to
 $ sudo singularity build lolcow-from-docker.simg docker://godlovedc/lolcow
 ```
 
+The `pull` command is equivalent and can be run without `sudo`, so this can be done directly on your cluster.
+
+
+```
+$ singularity pull docker://godlovedc/lolcow
+```
+
 You can build and host your own images on Docker Hub, (using Docker) or you can download and run images that others have built.
 
 ```
