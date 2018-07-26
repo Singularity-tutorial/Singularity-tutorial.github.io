@@ -65,7 +65,7 @@ if, however, you need to pipe the output of one command in your container to ano
 Pipes and redirects are shell constructs, so if you don't want your host shell to interpret them, you have to hide them from it.
 
 ```
-$ singularity exec lolcow.img sh -c "fortune | cowsay | lolcat"
+$ singularity exec lolcow.simg sh -c "fortune | cowsay | lolcat"
 ```
 
 The above invokes a new shell, but inside the container, and tells it to run the single command line `fortune | cowsay | lolcat`.
