@@ -8,32 +8,28 @@ The Singularity source code contains several example definition files in the `/e
 ```
 $ mkdir ../lolcow
 
-$ cp examples/ubuntu/Singularity ../lolcow/
+$ cp examples/debian/Singularity ../lolcow/
 
 $ cd ../lolcow
 
 $ nano Singularity
 ```
 
-Edit it until it looks like this:
+It should look like this:
 
 ```
 BootStrap: debootstrap
-OSVersion: xenial
-MirrorURL: http://us.archive.ubuntu.com/ubuntu/
-
+OSVersion: stable
+MirrorURL: http://ftp.us.debian.org/debian/
 
 %runscript
     echo "This is what happens when you run the container..."
 
-
 %post
     echo "Hello from inside the container"
-    sed -i 's/$/ universe/' /etc/apt/sources.list
     apt-get update
     apt-get -y install vim
     apt-get clean
-
 ```
 
 See the [Singularity docs](http://singularity.lbl.gov/docs-recipes) for an explanation of each of these sections.
@@ -64,19 +60,17 @@ Depending on the environment on your host system you may see your prompt change.
 
 ```
 Singularity lolcow:~> cat /etc/os-release
-NAME="Ubuntu"
-VERSION="16.04 LTS (Xenial Xerus)"
-ID=ubuntu
-ID_LIKE=debian
-PRETTY_NAME="Ubuntu 16.04 LTS"
-VERSION_ID="16.04"
-HOME_URL="http://www.ubuntu.com/"
-SUPPORT_URL="http://help.ubuntu.com/"
-BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
-UBUNTU_CODENAME=xenial
+PRETTY_NAME="Debian GNU/Linux 9 (stretch)"
+NAME="Debian GNU/Linux"
+VERSION_ID="9"
+VERSION="9 (stretch)"
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
 ```
 
-No matter what OS is running on your host, your container is running Ubuntu 16.04!
+No matter what OS is running on your host, your container is running Debian Stable!
 
 Let's try a few more commands:
 
@@ -190,17 +184,14 @@ Here is what our updated definition file should look like.
 
 ```
 BootStrap: debootstrap
-OSVersion: xenial
-MirrorURL: http://us.archive.ubuntu.com/ubuntu/
-
+OSVersion: stable
+MirrorURL: http://ftp.us.debian.org/debian/
 
 %runscript
     echo "This is what happens when you run the container..."
 
-
 %post
     echo "Hello from inside the container"
-    sed -i 's/$/ universe/' /etc/apt/sources.list
     apt-get update
     apt-get -y install fortune cowsay lolcat
     apt-get clean
@@ -223,17 +214,14 @@ Singularity stores a lot of [useful metadata](http://singularity.lbl.gov/docs-en
 ```
 $ singularity inspect --deffile lolcow.simg
 BootStrap: debootstrap
-OSVersion: xenial
-MirrorURL: http://us.archive.ubuntu.com/ubuntu/
-
+OSVersion: stable
+MirrorURL: http://ftp.us.debian.org/debian/
 
 %runscript
     echo "This is what happens when you run the container..."
 
-
 %post
     echo "Hello from inside the container"
-    sed -i 's/$/ universe/' /etc/apt/sources.list
     apt-get update
     apt-get -y install fortune cowsay lolcat
     apt-get clean
