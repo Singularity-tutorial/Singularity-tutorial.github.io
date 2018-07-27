@@ -1056,7 +1056,7 @@ root
 
 So in this case, the Singularity runtime actually provides an additional layer of security over and above what is provided on the host system.  
 
-*Before proceeding any further, stop and delete this program from your host system if you actually followed this portion of the tutorial.*
+**Before proceeding any further, stop and delete this program from your host system if you actually followed this portion of the tutorial.**
 
 ```
 $ sudo rm backdoor.simg/bin/my_sudo
@@ -1193,22 +1193,89 @@ Some programs need root privileges to run.  These often include services or daem
 
 Other programs may set the SUID bit or capabilities to run as root or with elevated privileges without your knowledge. For instance, the well-known `ping` program actually runs with elevated privileges (and needs to since it sets up a raw network socket).  This program will not run in a container unless you are root in the container.
 
+## Practical examples
+
+### Train a TensorFlow model on the classic MNIST data set
+
+In this example we will train a TensorFlow model to categorize handwritten digits using the classic [MNIST data set](http://yann.lecun.com/exdb/mnist/).
+
+First, let's download the models and scripts.
+
+```
+$ git clone https://github.com/tensorflow/models.git
+```
+
+The actual script that we want to run is here:
+
+```
+$ ll models/tutorials/image/mnist/convolutional.py
+-rw-rw-r-- 1 vagrant 14K Jul 25 16:16 models/tutorials/image/mnist/convolutional.py
+```
+
+Now we will just use the exec command with a TensorFlow container from DockerHub to run the script and start TensorFlow.
+
+```
+$ singularity exec docker://tensorflow/tensorflow:latest \
+    python models/tutorials/image/mnist/convolutional.py
+```
+
+If your host system happens to have a GPU that you want to use, the following command will suffice:
+
+```
+$ singularity exec --nv docker://tensorflow/tensorflow:latest-gpu \
+    python models/tutorials/image/mnist/convolutional.py
+```
+
+The `--nv` option tells Singularity to search for any NVIDIA driver related libraries and binaries and automatically mount them into the container so that the GPU hardware is exposed and usable inside of the container.  And then selecting the `latest-gpu` tag of TensorFlow ensures you get a version of TensorFlow compiled with GPU support.  
+
+### Run a jupyter notebook server
+
+In this example we will create a container with Anaconda and Jupyter.  
+
+The definition file for this container is pretty straightforward.  In this case, I've named it `anaconda.def`
+
+```
+BootStrap: docker
+From: ubuntu:bionic
+
+%post
+    apt-get update
+    apt-get install -y wget vim
+
+    cd /tmp
+    wget https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
+    sh Anaconda3-5.2.0-Linux-x86_64.sh -b -p /opt/anaconda3
+
+%environment
+    export PATH=/opt/anaconda3/bin:$PATH
+```
+
+We install `wget` and use it to download the Anaconda installer from the site where ContinuumIO hosts it.  Then we run the installer with the `-b` (batch) flag so that the installer runs non-interactively.  
+
+It's also important to note that we are using the `-p` (prefix) option, and installing Anaconda in the `/opt` directory.  By default, Anaconda installs into the current user's home directory.  Because we need to run the definition file as root, this means that Anaconda would be installed into `/root`.  If we run the container as a normal user we won't be able to access it for obvious reasons.  But even if we run the container as root we won't be able to access the installed Anaconda, because singularity will bind mount the host system `/root` (roots home) over the `/root` that exists inside the container.  
+
+As usual, we can build the container with the following command. 
+
+```
+$ sudo singularity build anaconda.simg anaconda.def
+```
+
+Once the container is built, we can run it like so:
+
+```
+$ singularity exec --bind /tmp:/run/user anaconda.simg jupyter notebook
+```
+
+Note the `--bind /tmp:/run/user` option argument pair.  This is necessary because Jupyter wants to write temporary session data to the `/run/user` directory, but the container has been mounted as read only.  Using the `--bind` command, Jupyter will write this data to `/tmp` on the host system.  
 
 
+This should start the server and give you an html address with a security token to use for the connection.
 
+If you are running Singularity directly on your local system you can just log into your notebook using the html address provided on your screen.  If you are running Singularity in a virtual machine, you may need to do some network configuration to make things work properly.  If you are running your Jupyter notebook on a remote resource, you probably need to set up an ssh tunnel in a new terminal to access the notebook server.  If your like me, and you can never remember the syntax for ssh tunnels, here is a hint:
 
-
-
-
-
-
-
-
-
-
-
-
-
+```
+$ ssh -N -L <port>:localhost:<port> <username>@<host>
+```
 
 
 
