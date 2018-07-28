@@ -1251,6 +1251,60 @@ $ singularity exec --nv docker://tensorflow/tensorflow:latest-gpu \
 
 The `--nv` option tells Singularity to search for any NVIDIA driver related libraries and binaries and automatically mount them into the container so that the GPU hardware is exposed and usable inside of the container.  And then selecting the `latest-gpu` tag of TensorFlow ensures you get a version of TensorFlow compiled with GPU support.  
 
+If you really want to build TensorFlow from scratch, here is an example definition file that you can use to get started.  This file will just compile tensorflow for CPU usage (with some optimized instruction sets).  If you want to build TensorFlow to run on a GPU, check the [instructions here](https://www.tensorflow.org/install/install_sources):
+
+```
+BootStrap: docker
+From: ubuntu:xenial
+
+%post
+
+    # install some basic deps
+    apt-get -y update
+    apt-get -y install curl git wget bzip2 \
+        pkg-config zip g++ zlib1g-dev unzip python \
+        python-numpy python-dev python-pip python-wheel
+
+    # install bazel
+    cd /tmp
+    wget https://github.com/bazelbuild/bazel/releases/download/0.15.2/bazel-0.15.2-installer-linux-x86_64.sh
+    chmod +x bazel-0.15.2-installer-linux-x86_64.sh
+    ./bazel-0.15.2-installer-linux-x86_64.sh --prefix=/opt/bazel-0.15.2
+    export PATH=/opt/bazel-0.15.2/bin:$PATH
+
+    # download tensorflow 1.2.0
+    git clone https://github.com/tensorflow/tensorflow
+    cd tensorflow
+    git checkout r1.9
+
+    # setup build env (use defaults)
+    export PYTHON_BIN_PATH="/usr/bin/python"
+    export PYTHON_LIB_PATH="/usr/local/lib/python2.7/site-packages"
+    export TF_NEED_JEMALLOC="n"
+    export TF_NEED_GCP="n"
+    export TF_NEED_HDFS="n"
+    export TF_NEED_OPENCL="n"
+    export TF_NEED_CUDA="n"
+    export CC_OPT_FLAGS="-march=native"
+    export TF_NEED_MKL="n"
+    export TF_ENABLE_XLA="n"
+    export TF_NEED_MPI=0
+    export TF_NEED_VERBS="n"
+
+    # build and install tensorflow
+    ./configure
+    bazel build -c opt --copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-mfpmath=both \
+        --copt=-msse4.2 //tensorflow/tools/pip_package:build_pip_package
+    bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+    pip install /tmp/tensorflow_pkg/tensorflow-*
+
+%environment
+    export PATH=/opt/bazel-0.15.2/bin:$PATH
+
+%runscript
+    python "$@"
+```
+
 ### Run a jupyter notebook server
 
 In this example we will create a container with Anaconda and Jupyter.  
