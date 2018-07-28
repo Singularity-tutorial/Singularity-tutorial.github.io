@@ -107,7 +107,7 @@ We're going to compile Singularity from source code.  First we'll need to make s
 ```
 $ sudo apt-get update
 
-$ sudo apt-get -y install python dh-autoreconf build-essential debootstrap
+$ sudo apt-get -y install python dh-autoreconf build-essential debootstrap libarchive-dev
 ```
 
 On CentOS, these commmands should get you up to speed.
@@ -117,7 +117,7 @@ $ sudo yum update
 
 $ sudo yum groupinstall 'Development Tools'
 
-$ sudo yum install wget epel-release
+$ sudo yum install wget epel-release libarchive-devel
 
 $ sudo yum install debootstrap.noarch
 ```
@@ -125,15 +125,15 @@ $ sudo yum install debootstrap.noarch
 Next we'll download a compressed archive of the source code (using the the `wget` command). Then we'll extract the source code from the archive (with the `tar` command).
 
 ```
-$ wget https://github.com/singularityware/singularity/releases/download/2.4/singularity-2.4.tar.gz
+$ wget https://github.com/singularityware/singularity/releases/download/2.5.2/singularity-2.5.2.tar.gz
 
-$ tar xvf singularity-2.4.tar.gz
+$ tar xzvf singularity-2.5.2.tar.gz
 ```
 
 Finally it's time to build and install!
 
 ```
-$ cd singularity-2.4
+$ cd singularity-2.5.2
 
 $ ./configure --prefix=/usr/local
 
@@ -189,16 +189,18 @@ Simply typing `singularity` will give you an summary of all the commands you can
 
 To build a singularity container, you must use the `build` command.  The `build` command installs an OS, sets up your container's environment and installs the apps you need.  To use the `build` command, we need a **recipe file** (also called a definition file). A Singularity recipe file is a set of instructions telling Singularity what software to install in the container.
 
-The Singularity source code contains several example definition files in the `/examples` subdirectory.  Let's copy the ubuntu example to our home directory and inspect it.
+The Singularity source code contains several example definition files in the `/examples` subdirectory.  Let's copy the ubuntu example and inspect it.
 
 **Note:** You need to build containers on a file system where the sudo command can write files as root. This may not work in an HPC cluster setting if your home directory resides on a shared file server. If that's the case you may have to to `cd` to a local hard disk such as `/tmp`.
 
 ```
-$ mkdir ../lolcow
+$ cd ~ # just in case you were not there already
 
-$ cp examples/ubuntu/Singularity ../lolcow/
+$ mkdir lolcow
 
-$ cd ../lolcow
+$ cp singularity-2.5.2/examples/ubuntu/Singularity lolcow/
+
+$ cd lolcow
 
 $ nano Singularity
 ```
@@ -218,8 +220,9 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     echo "Hello from inside the container"
     sed -i 's/$/ universe/' /etc/apt/sources.list
+    apt-get update
     apt-get -y install vim
-
+    apt-get clean
 ```
 
 See the [Singularity docs](http://singularity.lbl.gov/docs-recipes) for an explanation of each of these sections.
@@ -337,7 +340,7 @@ perl: warning: Falling back to the standard locale ("C").
                 ||     ||
 ```
 
-We're making progress, but we are now receiving a warning from perl.  However, before we tackle that, let's think some more about the `$PATH` variable.
+We're making progress, you may receive a warning from perl like the one above.  However, before we tackle that, let's think some more about the `$PATH` variable.
 
 We changed our path in this session, but those changes will disappear as soon as we exit the container just like they will when you exit any other shell.  To make the changes permanent we should add them to the definition file and re-bootstrap the container.  We'll do that in a minute.
 
@@ -428,7 +431,7 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 
 ### Blurring the line between the container and the host system.
 
-Singularity does not try to isolate your container completely from the host system.  This allows you to do some interesting things.
+Singularity does not try to isolate your container completely from the host system.  Unlike other container runtimes, Singularity favors _integration_ over _isolation_ This allows you to do some interesting things.
 
 Using the exec command, we can run commands within the container from the host system.  
 
@@ -712,13 +715,13 @@ Up to now all of our examples have run Singularity containers in the foreground.
 In Singularity v2.4+, you can use the [`instance` command group](http://singularity.lbl.gov/docs-instances) to start and control container instances that run in the background.  To demonstrate, let's start an instance of our `lolcow.simg` container running in the background.
 
 ```
-$ singularity instance.start lolcow.simg cow1
+$ singularity instance start lolcow.simg cow1
 ```
 
-We can use the `instance.list` command to show the instances that are currently running.
+We can use the `instance list` command to show the instances that are currently running.
 
 ```
-$ singularity instance.list 
+$ singularity instance list 
 DAEMON NAME      PID      CONTAINER IMAGE
 cow1             10794    /home/dave/lolcow.simg
 ```
@@ -743,11 +746,11 @@ Note that we've entered a new PID namespace, so that the `singularity-instance` 
 You can start multiple instances running in the background, as long as you give them unique names.
 
 ```
-$ singularity instance.start lolcow.simg cow2
+$ singularity instance start lolcow.simg cow2
 
-$ singularity instance.start lolcow.simg cow3
+$ singularity instance start lolcow.simg cow3
 
-$ singularity instance.list
+$ singularity instance list
 DAEMON NAME      PID      CONTAINER IMAGE
 cow1             10794    /home/dave/lolcow.simg
 cow2             10855    /home/dave/lolcow.simg
@@ -757,10 +760,10 @@ cow3             10885    /home/dave/lolcow.simg
 You can stop individual instances using their unique names or stop all instances with the `--all` option.
 
 ```
-$ singularity instance.stop cow1
+$ singularity instance stop cow1
 Stopping cow1 instance of /home/dave/lolcow.simg (PID=10794)
 
-$ singularity instance.stop --all
+$ singularity instance stop --all
 Stopping cow2 instance of /home/dave/lolcow.simg (PID=10855)
 Stopping cow3 instance of /home/dave/lolcow.simg (PID=10885)
 ```
@@ -770,13 +773,13 @@ Stopping cow3 instance of /home/dave/lolcow.simg (PID=10885)
 These examples are not very useful because `lolcow.simg` doesn't run any services.  Let's extend the example to something useful by running a local nginx web server in the background.  This command will download the official nginx image from Docker Hub and start it in a background instance called "web".  (The commands need to be executed as root so that nginx can run with the privileges it needs.)
 
 ```
-$ sudo singularity instance.start docker://nginx web
+$ sudo singularity instance start docker://nginx web
 Docker image path: index.docker.io/library/nginx:latest
 Cache folder set to /root/.singularity/docker
 [3/3] |===================================| 100.0%
 Creating container runtime...
 
-$ sudo singularity instance.list
+$ sudo singularity instance list
 DAEMON NAME      PID      CONTAINER IMAGE
 web              15379    /tmp/.singularity-runtime.MBzI4Hus/nginx
 ```
@@ -856,10 +859,10 @@ Singularity tensorflow:~> python
 Singularity tensorflow:~> exit
 ```
 
-You can also build, download, and run containers from [Singularity Hub](https://singularity-hub.org/)
+You can also build, pull, and exec containers from [Singularity Hub](https://singularity-hub.org/)
 
 ```
-$ singularity run shub://GodloveD/lolcow
+$ singularity exec shub://GodloveD/lolcow cowsay moo
 ```
 
 You can even use images on Docker Hub and Singularity Hub as a starting point for your own images. Singularity recipe files allow you to specifiy a Docker Hub or Singularity Hub registry to bootstrap from
@@ -895,11 +898,31 @@ From: GodloveD/busybox
 
 Both Docker Hub and Singularity Hub link to your GitHub account. New container builds are automatically triggered every time you push changes to a Docker file or a Singularity recipe file in a linked repository.  
 
+Returning to our previous example of the lolcow container, it's actually somewhat easier to build this container using Docker Hub as a starting point.  
+
+```
+BootStrap: docker
+From: ubuntu:16.04
+
+%post
+    apt-get -y update
+    apt-get -y install fortune cowsay lolcat
+
+%environment
+    export LC_ALL=C
+    export PATH=/usr/games:$PATH
+
+%runscript
+    fortune | cowsay | lolcat
+```
+
+Since we are using a pre-built container from Docker Hub, we don't have to worry about configuring apt to work with the universe repositories.  
+
 ## Miscellaneous Topics
 
 ### details of the Singularity security model
 
-Disclaimer: Many of the things in this section are remarkably bad practices.  They are just here to illustrate examples.  Don't try them outside of this context.  Maybe don't actually try them inside of this context either.
+**Disclaimer: Many of the things in this section are remarkably bad practices.  They are just here to illustrate examples.  Don't try them outside of this context.  Maybe don't actually try them inside of this context either.**
 
 Let's say that you want to run a command as root inside of a Singularity container.  
 
@@ -974,7 +997,7 @@ Singularity backdoor.simg:~> exit
 
 I entered the correct password, but I still am not root!
 
-One more try before we give up.  Let's write our own sudo program!  (Disclaimer: This is a terrible idea.)
+One more try before we give up.  Let's write our own sudo program!  (**Disclaimer: This is a terrible idea.**)
 
 For this to work, we need to write a little C. 
 
@@ -1011,20 +1034,20 @@ int main(int argc, char** argv) {
 }
 ```
 
-Save this text into a file called `my_sudo.c`, and compile it like so:
+Save this text into a file called `my_sudo.c`.
 
 Now if you compile the program, `chown` the resulting binary to `root` and add the user `SUID` bit, you will have a program that takes a single string argument, elevates the user's permissions to root, and executes it.  
 
-Now just to state the obvious, this is a dangerous program to have around.  You probably do NOT want to actually try this just in case you make a mistake and this ugly program ends up on your system somewhere.  Just read the tutorial and take my word for it. 
+Now just to state the obvious, **this is a dangerous program to have around**.  You probably do **NOT** want to actually try this just in case you make a mistake and this ugly program ends up sitting around on your host system somewhere.  Just read the tutorial and take my word for it. 
 
 I'll install this program within the container being careful to compile it within the container (even though in this case the container is just a bare directory so we will still need to remove it later).
 
 ```
-$ cp my_sudo.c /tmp/
+$ mv my_sudo.c /tmp/
 
 $ sudo singularity shell --writable backdoor.simg/
 
-Singularity backdoor.simg:~> apt-get install gcc
+Singularity backdoor.simg:~> apt-get install -y gcc
 
 Singularity backdoor.simg:~> mv /tmp/my_sudo.c /bin/
 
@@ -1059,7 +1082,7 @@ So in this case, the Singularity runtime actually provides an additional layer o
 **Before proceeding any further, stop and delete this program from your host system if you actually followed this portion of the tutorial.**
 
 ```
-$ sudo rm backdoor.simg/bin/my_sudo
+$ sudo rm backdoor.simg/bin/my_sudo*
 ```
 
 These examples should serve to illustrate the guiding security principle of the Singularity runtime.  Singularity allows _untrusted_ users to run _untrusted_ containers safely.  
