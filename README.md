@@ -1,9 +1,9 @@
 # <b>Creating and running software containers with Singularity</b>
-### <i>How to use [Singularity](http://singularity.lbl.gov)! </i>
+### <i>How to use [Singularity](https://github.com/singularityware/singularity)! </i>
 
-This is an introductory workshop on Singularity. It was originally taught by David Godlove at the [NIH HPC](https://hpc.nih.gov/), but the content has since been adapted to a general audience.  For more information about the topics covered here, see the following:
+This is an introductory workshop on Singularity. It was originally taught by [Dave Godlove](https://github.com/GodloveD) at the [NIH HPC](https://hpc.nih.gov/), but the content has since been adapted to a general audience.  For more information about the topics covered here, see the following:
 
-- [Singularity Home](http://singularity.lbl.gov/)
+- [Singularity Docs](https://www.sylabs.io/docs/)
 - [Singularity on GitHub](https://github.com/singularityware/singularity)
 - [Singularity on Google Groups](https://groups.google.com/a/lbl.gov/forum/#!forum/singularity)
 - [Singularity at the NIH HPC](https://hpc.nih.gov/apps/singularity.html)
@@ -78,11 +78,11 @@ Docker shines for DevOPs teams providing cloud-hosted micro-services to users.
 
 ### Singularity 
 
-[Singularity](http://singularity.lbl.gov/) is a relatively new container software originally developed by Greg Kurtzer while at Lawrence Berkley National labs.  It was developed with security, scientific software, and HPC systems in mind.  
+[Singularity](https://github.com/singularityware/singularity) is a relatively new container software originally developed by Greg Kurtzer while at Lawrence Berkley National labs.  It was developed with security, scientific software, and HPC systems in mind.  
 
 **philosophy**
 
-Singularity assumes ([more or less](http://containers-ftw.org/SCI-F/)) that each application will have its own container.  It does not seek to fully isolate containers from one another or the host system. 
+Singularity assumes that each application will have its own container.  It does not seek to fully isolate containers from one another or the host system. 
 Singularity assumes that you will have a build system where you are the root user, but that you will also have a production system where you may or may not be the root user. 
 
 **strengths**
@@ -100,7 +100,7 @@ Singularity assumes that you will have a build system where you are the root use
 Singularity shines for scientific software running in an HPC environent.  We will use it for the remainder of the class.
 
 ### Install
-Here we will install the latest tagged release from [GitHub](https://github.com/singularityware/singularity). If you prefer to install a different version or to install Singularity in a different location, see these [Singularity docs](http://singularity.lbl.gov/docs-installation).
+Here we will install the latest tagged release from [GitHub](https://github.com/singularityware/singularity/releases). If you prefer to install a different version or to install Singularity in a different location, see these [Singularity docs](https://www.sylabs.io/guides/2.5.1/user-guide/installation.html).
 
 We're going to compile Singularity from source code.  First we'll need to make sure we have some development tools installed so that we can do that.  On Ubuntu, run these commands to make sure you have all the necessary packages installed.
 
@@ -225,7 +225,7 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     apt-get clean
 ```
 
-See the [Singularity docs](http://singularity.lbl.gov/docs-recipes) for an explanation of each of these sections.
+See the [Singularity docs](https://www.sylabs.io/guides/2.5.1/user-guide/container_recipes.html#sections) for an explanation of each of these sections.
 
 Now let's use this recipe file as a starting point to build our `lolcow.img` container. Note that the build command requires `sudo` privileges, when used in combination with a recipe file. 
 
@@ -405,7 +405,7 @@ $ sudo singularity build lolcow.simg Singularity
 
 Note that we changed the name of the container.  By omitting the `--sandbox` option, we are building our container in the standard Singularity squashfs file format.  We are denoting the file format with the (optional) `.simg` extension.  A squashfs file is compressed and immutable making it a good choice for a production environment.
 
-Singularity stores a lot of [useful metadata](http://singularity.lbl.gov/docs-environment-metadata).  For instance, if you want to see the recipe file that was used to create the container you can use the `inspect` command like so:
+Singularity stores a lot of [useful metadata](https://www.sylabs.io/guides/2.5.1/user-guide/environment_and_metadata.html).  For instance, if you want to see the recipe file that was used to create the container you can use the `inspect` command like so:
 
 ```
 $ singularity inspect --deffile lolcow.simg
@@ -712,7 +712,7 @@ For a lot more info on how to bind mount host directories to your container, che
 Up to now all of our examples have run Singularity containers in the foreground.  But what if you want to run a service like a web server or a database in a Singularity container in the background? 
 
 #### lolcow (useless) example
-In Singularity v2.4+, you can use the [`instance` command group](http://singularity.lbl.gov/docs-instances) to start and control container instances that run in the background.  To demonstrate, let's start an instance of our `lolcow.simg` container running in the background.
+In Singularity v2.4+, you can use the [`instance` command group](https://www.sylabs.io/guides/2.5.1/user-guide/running_services.html) to start and control container instances that run in the background.  To demonstrate, let's start an instance of our `lolcow.simg` container running in the background.
 
 ```
 $ singularity instance start lolcow.simg cow1
