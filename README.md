@@ -1305,6 +1305,8 @@ From: ubuntu:xenial
     python "$@"
 ```
 
+Disclamer:  This defintion file built TensorFlow as of July 2018, but there is no guarantee that it will work in the future since TensorFlow develops quickly.  
+
 ### Run a jupyter notebook server
 
 In this example we will create a container with Anaconda and Jupyter.  
