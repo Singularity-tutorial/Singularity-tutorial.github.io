@@ -6,7 +6,7 @@ We're going to compile Singularity from source code.  First we'll need to make s
 ```
 $ sudo apt-get update
 
-$ sudo apt-get -y install python build-essential debootstrap squashfs-tools
+$ sudo apt-get -y install python build-essential debootstrap squashfs-tools libarchive-dev
 ```
 
 On CentOS, these commmands should get you up to speed.
@@ -18,7 +18,7 @@ $ sudo yum groupinstall 'Development Tools'
 
 $ sudo yum install wget epel-release
 
-$ sudo yum install debootstrap.noarch squashfs-tools
+$ sudo yum install debootstrap.noarch squashfs-tools libarchive-devel
 ```
 
 Next we'll download a compressed archive of the source code (using the the `wget` command). Then we'll extract the source code from the archive (with the `tar` command).
