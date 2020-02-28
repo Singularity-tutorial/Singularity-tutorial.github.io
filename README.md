@@ -1,14 +1,14 @@
 # <b>Creating and running software containers with Singularity</b>
-### <i>How to use [Singularity](http://singularity.lbl.gov)! </i>
+### <i>How to use [Singularity](https://sylabs.io/guides/latest/user-guide/)! </i>
 
 This is an introductory workshop on Singularity. It was originally taught by David Godlove at the [NIH HPC](https://hpc.nih.gov/), but the content has since been adapted to a general audience.  For more information about the topics covered here, see the following:
 
-- [Singularity Home](http://singularity.lbl.gov/)
+- [Singularity Home](https://sylabs.io/singularity/)
 - [Singularity on GitHub](https://github.com/singularityware/singularity)
 - [Singularity on Google Groups](https://groups.google.com/a/lbl.gov/forum/#!forum/singularity)
 - [Singularity at the NIH HPC](https://hpc.nih.gov/apps/singularity.html)
 - [Docker documentation](https://docs.docker.com/)
-- [Singularity Hub](https://singularity-hub.org/)
+- [Singularity Container Services](https://cloud.sylabs.io/home)
 - [Docker Hub](https://hub.docker.com/)
 
 ## What IS a software container anyway? (And what's it good for?)
@@ -42,7 +42,7 @@ Containers and VMs are both types of virtualization.  But it's important to unde
 
 Because of their differences, VMs and containers serve different purposes and should be favored under different circumstances.  
 - VMs are good for long running interactive sessions where you may want to use several different applications.  (Checking email on Outlook and using Microsoft Word and Excel).
-- Containers are better suited to running one or two applications non-interactively in their own custom environments.
+- Containers are better suited to running one or two applications, often non-interactively, in their own custom environments.
 
 ## Docker
 
@@ -73,7 +73,7 @@ See https://docs.docker.com/engine/security/security/#docker-daemon-attack-surfa
 - Not architected with security in mind
 - Not built for HPC (but good for cloud) 
 
-Docker shines for DevOPs teams providing cloud-hosted micro-services to users.
+Docker shines for DevOPs teams providing cloud-native micro-services to users.
 
 ## Singularity
 
@@ -88,8 +88,8 @@ Singularity assumes that you will have a build system where you are the root use
 - Easy to learn and use (relatively speaking)
 - Approved for HPC ([installed on some of the biggest HPC systems in the world](http://singularity.lbl.gov/citation-registration#clusters))
 - Can convert Docker containers to Singularity and run containers directly from Docker Hub
-- [Singularity Hub](https://singularity-hub.org/)!
-    - A place to build and host your containers similar to Docker Hub
+- [Singularity Container Services](https://cloud.sylabs.io/home)!
+    - A place to build and share your containers securely
 
 <b>weaknesses</b>
 - Younger and less mature than Docker

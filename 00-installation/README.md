@@ -1,14 +1,13 @@
 # Installing Singularity
-Here we will install the latest tagged release from [GitHub](https://github.com/singularityware/singularity). If you prefer to install a different version or to install Singularity in a different location, see these [Singularity docs](https://sylabs.io/guides/3.5/admin-guide/installation.html).
+Here we will install the latest tagged release from [GitHub](https://github.com/sylabs/singularity/releases). If you prefer to install a different version or to install Singularity in a different location, see these [Singularity docs](https://sylabs.io/guides/3.5/admin-guide/installation.html).
 
 We're going to compile Singularity from source code.  First we'll need to make sure we have some development tools and libraries installed so that we can do that.  On Ubuntu, run these commands to make sure you have all the necessary packages installed.
 
 ```
 $ sudo apt-get update
 
-
 $ sudo apt-get install -y build-essential libssl-dev uuid-dev libgpgme11-dev \
-    squashfs-tools libseccomp-dev wget pkg-config git cryptsetup
+    squashfs-tools libseccomp-dev wget pkg-config git cryptsetup debootstrap
 ```
 
 On CentOS, these commmands should get you up to speed.

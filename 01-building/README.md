@@ -1,18 +1,28 @@
 # Building a basic container
 
-In this exercise, we will build a container from scratch similar to the one we used to test the installation.
-To build a singularity container, you must use the `build` command.  The `build` command installs an OS, sets up your container's environment and installs the apps you need.  To use the `build` command, we need a **recipe file** (also called a definition file). A Singularity recipe file is a set of instructions telling Singularity what software to install in the container.
+In this exercise, we will build a container from scratch similar to the lolcow container we used to test the installation.
 
-The Singularity source code contains several example definition files in the `/examples` subdirectory.  Let's copy the ubuntu example to our home directory and inspect it.
+We are going to use a standard development cycle (sometimes referred to as Singularity flow) to create this container. It consists of the following steps:
+
+- create a writable container (called a `sandbox`)
+- shell into the container and tinker with it interactively
+- record changes that we like in our definition file
+- rebuild the container from the definition file if we break it
+- rinse and repeat until we are happy with the result
+- rebuild the container as a read-only singularity image format (SIF) image for use in production
+
+To build a singularity container, you must use the `build` command.  The `build` command installs an OS, sets up your container's environment and installs the apps you need.  To use the `build` command, we need a definition file. A [Singularity definition file](https://sylabs.io/guides/3.5/user-guide/definition_files.html) is a set of instructions telling Singularity what software to install in the container.
+
+The Singularity source code contains several example definition files in the `/examples` subdirectory.  Let's make a new directory, copy the Debian example definition file, and inspect it.
 
 ```
-$ mkdir ../lolcow
+$ mkdir ~/lolcow
 
-$ cp examples/debian/Singularity ../lolcow/
+$ cp ~/singularity/examples/debian/Singularity ~/lolcow/lolcow.def
 
-$ cd ../lolcow
+$ cd ~/lolcow
 
-$ nano Singularity
+$ nano lolcow.def
 ```
 
 It should look like this:
@@ -27,28 +37,27 @@ MirrorURL: http://ftp.us.debian.org/debian/
 
 %post
     echo "Hello from inside the container"
-    apt-get update
-    apt-get -y install vim
-    apt-get clean
-```
-
-See the [Singularity docs](http://singularity.lbl.gov/docs-recipes) for an explanation of each of these sections.
-
-Now let's use this recipe file as a starting point to build our `lolcow.img` container. Note that the build command requires `sudo` privileges, when used in combination with a recipe file. 
+    apt-get -y --allow-unauthenticated install vim
 
 ```
-$ sudo singularity build --sandbox lolcow Singularity
+
+See the [Singularity docs](https://sylabs.io/guides/3.5/user-guide/definition_files.html) for an explanation of each of these sections.
+
+Now let's use this definition file as a starting point to build our `lolcow.img` container. Note that the build command requires `sudo` privileges. (We'll discuss some ways around this restriction later in the class.)
+
+```
+$ sudo singularity build --sandbox lolcow lolcow.def
 ```
 
-The `--sandbox` option in the command above tells Singularity that we want to build a special type of container for development purposes.  
+This is telling Singularity to build a container called `lolcow` from the `lolcow.def` definition file. The `--sandbox` option in the command above tells Singularity that we want to build a special type of container (called a sandbox) for development purposes. 
 
-Singularity can build containers in several different file formats. The default is to build a [squashfs](https://en.wikipedia.org/wiki/SquashFS) image. The squashfs format is compressed and immutable making it a good choice for reproducible, production-grade containers.  
+Singularity can build containers in several different file formats. The default is to build a SIF (singularity image format) container that uses [squashfs](https://en.wikipedia.org/wiki/SquashFS) for the file system. The squashfs format is compressed and immutable making it a good choice for reproducible, production-grade containers.  
 
-But if you want to shell into a container and tinker with it (like we will do here), you should build a sandbox (which is really just a directory).  This is great when you are still developing your container and don't yet know what should be included in the recipe file.  
+But if you want to shell into a container and tinker with it (like we will do here), you should build a sandbox (which is really just a directory).  This is great when you are still developing your container and don't yet know what to include in the definition file.  
 
-When your build finishes, you will have a basic Ubuntu container saved in a local directory called `lolcow`.
+When your build finishes, you will have a basic Debian container saved in a local directory called `lolcow`.
 
-# Using `shell` to explore and modify containers
+## Using `shell` to explore and modify containers
 
 Now let's enter our new container and look around.  
 
@@ -60,10 +69,11 @@ Depending on the environment on your host system you may see your prompt change.
 
 ```
 Singularity lolcow:~> cat /etc/os-release
-PRETTY_NAME="Debian GNU/Linux 9 (stretch)"
+PRETTY_NAME="Debian GNU/Linux 10 (buster)"
 NAME="Debian GNU/Linux"
-VERSION_ID="9"
-VERSION="9 (stretch)"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
 ID=debian
 HOME_URL="https://www.debian.org/"
 SUPPORT_URL="https://www.debian.org/support"
@@ -75,32 +85,31 @@ No matter what OS is running on your host, your container is running Debian Stab
 Let's try a few more commands:
 
 ```
-Singularity lolcow:~> whoami
+Singularity> whoami
 dave
 
-Singularity lolcow:~> hostname
+Singularity> hostname
 hal-9000
 ```
 
-This is one of the core features of Singularity that makes it so attractive from a security standpoint.  The user remains the same inside and outside of the container. 
+This is one of the core features of Singularity that makes it so attractive from a security and usability standpoint.  The user remains the same inside and outside of the container. 
 
 Let's try installing some software. I used the programs `fortune`, `cowsay`, and `lolcat` to produce the container that we saw in the first demo.
 
 ```
-Singularity lolcow:~> apt-get update && apt-get -y install fortune cowsay lolcat
-Reading package lists... Done
-W: chmod 0700 of directory /var/lib/apt/lists/partial failed - SetupAPTPartialDirectory (1: Operation not permitted)
-E: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)
-E: Unable to lock directory /var/lib/apt/lists/
+Singularity> Singularity> sudo apt-get update && apt-get -y install fortune cowsay lolcat
+bash: sudo: command not found
 ```
 
 Whoops!
 
-We don't have permission.
-But even if we had installed `sudo` into the container and tried to run this command with it, or change to root using `su`, we would still find it impossible to elevate our privileges within the container:
+The `sudo` command is not found. But even if we had installed `sudo` into the
+container and tried to run this command with it, or change to root using `su`,
+we would still find it impossible to elevate our privileges within the
+container:
 
 ```
-Singularity:~> sudo apt-get update
+Singularity> sudo apt-get update
 sudo: effective uid is not 0, is /usr/bin/sudo on a file system with the 'nosuid' option set or an NFS file system without root privileges?
 ```
 
@@ -109,41 +118,36 @@ Once again, this is an important concept in Singularity.  If you enter a contain
 Let's exit the container and re-enter as root.
 
 ```
-Singularity lolcow:~> exit
+Singularity> exit
 
 $ sudo singularity shell --writable lolcow
 ```
 
 Now we are the root user inside the container. Note also the addition of the `--writable` option.  This option allows us to modify the container.  The changes will actually be saved into the container and will persist across uses. 
 
-Let's try installing some software again.
+Let's try installing our software again.
 
 ```
-Singularity lolcow:~> apt-get update && apt-get -y install fortune cowsay lolcat
+Singularity> apt-get update && apt-get -y install fortune cowsay lolcat
 ```
 
 Now you should see the programs successfully installed.  Let's try running the demo in this new container.
 
 ```
-Singularity lolcow:~> fortune | cowsay | lolcat
+Singularity> fortune | cowsay | lolcat
 bash: lolcat: command not found
 bash: cowsay: command not found
 bash: fortune: command not found
 ```
 
-Drat! It looks like the programs were not added to our `$PATH`.  Let's add them and try again.
+Drat! 
+
+It looks like the programs were not added to our `$PATH`.  Let's add them and try again.
 
 ```
-Singularity lolcow:~> export PATH=$PATH:/usr/games
+Singularity> export PATH=$PATH:/usr/games
 
 Singularity lolcow:~> fortune | cowsay | lolcat
-perl: warning: Setting locale failed.
-perl: warning: Please check that your locale settings:
-        LANGUAGE = (unset),
-        LC_ALL = (unset),
-        LANG = "en_US.UTF-8"
-    are supported and installed on your system.
-perl: warning: Falling back to the standard locale ("C").
  ________________________________________
 / Keep emotionally active. Cater to your \
 \ favorite neurosis.                     /
@@ -155,38 +159,32 @@ perl: warning: Falling back to the standard locale ("C").
                 ||     ||
 ```
 
-We're making progress, but we are now receiving a warning from perl.  However, before we tackle that, let's think some more about the `$PATH` variable.
+Great!  Things are working properly now.  
+
+---
+**NOTE** 
+
+If  you receive warnings from the Perl language about the `locale` being incorrect, you can usually fix them with `export LC_ALL=C`.
+
+---
+
+---
+**NOTE** 
 
 We changed our path in this session, but those changes will disappear as soon as we exit the container just like they will when you exit any other shell.  To make the changes permanent we should add them to the definition file and re-bootstrap the container.  We'll do that in a minute.
 
-Now back to our perl warning.  Perl is complaining that the locale is not set properly.  Basically, perl wants to know where you are and what sort of language encoding it should use.  Should you encounter this warning you can  probably fix it with the `locale-gen` command or by setting `LC_ALL=C`.  Here we'll just set the environment variable.
+## Building the final production-grade SIF file
 
-```
-Singularity lolcow:~> export LC_ALL=C
+---
 
-Singularity lolcow:~> fortune | cowsay | lolcat
- _________________________________________
-/ FORTUNE PROVIDES QUESTIONS FOR THE      \
-| GREAT ANSWERS: #19 A: To be or not to   |
-\ be. Q: What is the square root of 4b^2? /
- -----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-```
-
-Great!  Things are working properly now.  
-
-Although it is fine to shell into your Singularity container and make changes while you are debugging, you ultimately want all of these changes to be reflected in your recipe file.  Otherwise if you need to reproduce it from scratch you will forget all of the changes you made.
+Although it is fine to shell into your Singularity container and make changes while you are debugging, you ultimately want all of these changes to be reflected in your definition file.  Otherwise if you need to reproduce it from scratch you will forget all of the changes you made. You will also want to rebuild you container into something more durable and robust than a directory.  
 
 Let's update our definition file with the changes we made to this container.
 
 ```
-Singularity lolcow:~> exit
+Singularity> exit
 
-$ nano Singularity
+$ nano lolcow.def
 ```
 
 Here is what our updated definition file should look like.
@@ -203,25 +201,23 @@ MirrorURL: http://ftp.us.debian.org/debian/
     echo "Hello from inside the container"
     apt-get update
     apt-get -y install fortune cowsay lolcat
-    apt-get clean
 
 %environment
     export PATH=$PATH:/usr/games
-    export LC_ALL=C
 ```
 
 Let's rebuild the container with the new definition file.
 
 ```
-$ sudo singularity build lolcow.simg Singularity
+$ sudo singularity build lolcow.sif lolcow.def
 ```
 
-Note that we changed the name of the container.  By omitting the `--sandbox` option, we are building our container in the standard Singularity squashfs file format.  We are denoting the file format with the (optional) `.simg` extension.  A squashfs file is compressed and immutable making it a good choice for a production environment.
+Note that we changed the name of the container.  By omitting the `--sandbox` option, we are building our container in the standard Singularity file format (SIF).  We are denoting the file format with the (optional) `.sif` extension.  A SIF file is compressed and immutable making it a good choice for a production environment.
 
-Singularity stores a lot of [useful metadata](http://singularity.lbl.gov/docs-environment-metadata).  For instance, if you want to see the recipe file that was used to create the container you can use the `inspect` command like so:
+Singularity stores a lot of [useful metadata](https://sylabs.io/guides/3.5/user-guide/environment_and_metadata.html#container-metadata).  For instance, if you want to see the definition file that was used to create the container you can use the `inspect` command like so:
 
 ```
-$ singularity inspect --deffile lolcow.simg
+$ singularity inspect --deffile  lolcow.sif
 BootStrap: debootstrap
 OSVersion: stable
 MirrorURL: http://ftp.us.debian.org/debian/
@@ -233,9 +229,7 @@ MirrorURL: http://ftp.us.debian.org/debian/
     echo "Hello from inside the container"
     apt-get update
     apt-get -y install fortune cowsay lolcat
-    apt-get clean
 
 %environment
     export PATH=$PATH:/usr/games
-    export LC_ALL=C
 ```
