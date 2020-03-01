@@ -70,33 +70,13 @@ Typing `singularity help <command>` will give you more detailed information abou
 You can test your installation like so:
 
 ```
-$ singularity run docker://godlovedc/lolcow
+$ singularity run library://godlovedc/funny/lolcow
 ```
 
 You should see something like the following.
 
 ```
- INFO:    Converting OCI blobs to SIF format
- INFO:    Starting build...
- Getting image source signatures
- Copying blob 9fb6c798fa41 done
- Copying blob 3b61febd4aef done
- Copying blob 9d99b9777eb0 done
- Copying blob d010c8cf75d7 done
- Copying blob 7fac07fb303e done
- Copying blob 8e860504ff1e done
- Copying config 73d5b1025f done
- Writing manifest to image destination
- Storing signatures
- 2020/02/25 23:58:06  info unpack layer: sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
- 2020/02/25 23:58:06  warn rootless{dev/agpgart} creating empty file in place of device 10:175
- [snip...]
- 2020/02/25 23:58:09  info unpack layer: sha256:3b61febd4aefe982e0cb9c696d415137384d1a01052b50a85aae46439e15e49a
- 2020/02/25 23:58:09  info unpack layer: sha256:9d99b9777eb02b8943c0e72d7a7baec5c782f8fd976825c9d3fb48b3101aacc2
- 2020/02/25 23:58:09  info unpack layer: sha256:d010c8cf75d7eb5d2504d5ffa0d19696e8d745a457dd8d28ec6dd41d3763617e
- 2020/02/25 23:58:09  info unpack layer: sha256:7fac07fb303e0589b9c23e6f49d5dc1ff9d6f3c8c88cabe768b430bdb47f03a9
- 2020/02/25 23:58:09  info unpack layer: sha256:8e860504ff1ee5dc7953672d128ce1e4aa4d8e3716eb39fe710b849c64b20945
- INFO:    Creating SIF file...
+INFO:    Downloading library image
  _______________________________________
 / Excellent day for putting Slinkies on \
 \ an escalator.                         /
@@ -110,6 +90,6 @@ You should see something like the following.
 
 Your cow will likely say something different (and be more colorful), but as long as you see a cow your installation is working properly.  
 
-This command downloads, converts, and runs a container from [Docker Hub](https://hub.docker.com/r/godlovedc/lolcow/). You will see a lot of warnings that have to do with the fact that you've created this container without using root privileges. Pay them no mind. 
+This command downloads and "runs" a container from [Singularity Container Library](https://cloud.sylabs.io/library). (We'll be talking more about what it means to "run" a container later on in the class.) 
 
-In the next exercise, we will learn how to build a similar container from scratch.
+In a following exercise, we will learn how to build a similar container from scratch. But right now, we are going to use this container to execute a bunch of basic commands and just get a feel for what it's like to use Singularity.  

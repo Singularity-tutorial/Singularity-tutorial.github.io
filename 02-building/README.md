@@ -57,7 +57,7 @@ But if you want to shell into a container and tinker with it (like we will do he
 
 When your build finishes, you will have a basic Debian container saved in a local directory called `lolcow`.
 
-## Using `shell` to explore and modify containers
+## Using `shell --writable` to explore and modify containers
 
 Now let's enter our new container and look around.  
 
@@ -65,34 +65,7 @@ Now let's enter our new container and look around.
 $ singularity shell lolcow
 ```
 
-Depending on the environment on your host system you may see your prompt change. Let's look at what OS is running inside the container.
-
-```
-Singularity lolcow:~> cat /etc/os-release
-PRETTY_NAME="Debian GNU/Linux 10 (buster)"
-NAME="Debian GNU/Linux"
-VERSION_ID="10"
-VERSION="10 (buster)"
-VERSION_CODENAME=buster
-ID=debian
-HOME_URL="https://www.debian.org/"
-SUPPORT_URL="https://www.debian.org/support"
-BUG_REPORT_URL="https://bugs.debian.org/"
-```
-
-No matter what OS is running on your host, your container is running Debian Stable!
-
-Let's try a few more commands:
-
-```
-Singularity> whoami
-dave
-
-Singularity> hostname
-hal-9000
-```
-
-This is one of the core features of Singularity that makes it so attractive from a security and usability standpoint.  The user remains the same inside and outside of the container. 
+Depending on the environment on your host system you may see your prompt change. 
 
 Let's try installing some software. I used the programs `fortune`, `cowsay`, and `lolcat` to produce the container that we saw in the first demo.
 
