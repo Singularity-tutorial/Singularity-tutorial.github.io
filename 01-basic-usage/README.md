@@ -71,6 +71,13 @@ UBUNTU_CODENAME=xenial
 
 No matter what OS is running on your host, your container is running Ubuntu 16.04 (Xenial Xerus)!
 
+---
+**NOTE**
+
+In general, the Singularity action commands (like `shell`, `run`, and `exec`) are expected to work with URIs like `library://` and `docker://` the same as they would work with a local image.
+
+---
+
 
 Let's try a few more commands:
 
