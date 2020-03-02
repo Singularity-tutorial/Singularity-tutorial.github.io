@@ -197,7 +197,7 @@ OSVersion: stable
 MirrorURL: http://ftp.us.debian.org/debian/
 
 %runscript
-    fortune | cowsay | lolcat
+    echo "This is what happens when you run the container..."
 
 %post
     apt-get update
