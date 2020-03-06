@@ -11,7 +11,7 @@ First, we will `cd` back into our `~/lolcow` directory (if we are not already th
 ---
 **NOTE**
 
-This class is taught using virtual machines, but you should still _always_ be careful and double check your location, permissions, and mental state before issuing a `rm -rf` command. That goes double when issuing the command as root.
+This class is taught using virtual machines, but you should still _always_ be careful and double check your location, permissions, and mental state before issuing a `rm -rf` command. That goes _double_ when issuing the command as root.
 
 ---
 

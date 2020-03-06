@@ -77,7 +77,7 @@ Docker shines for DevOPs teams providing cloud-native micro-services to users.
 
 ## Singularity
 
-[Singularity](http://singularity.lbl.gov/) is a relatively new container software originally developed by Greg Kurtzer while at Lawrence Berkley National labs.  It was developed with security, scientific software, and HPC systems in mind.  
+[Singularity](http://singularity.lbl.gov/) is a relatively new container software invented by Greg Kurtzer while at Lawrence Berkley National labs and now developed by his company [Sylabs](sylabs.io).  It was developed with security, scientific software, and HPC systems in mind.  
 
 **philosophy**
 

@@ -71,7 +71,7 @@ Depending on the environment on your host system you may see your prompt change.
 Let's try installing some software. I used the programs `fortune`, `cowsay`, and `lolcat` to produce the container that we saw in the first demo.
 
 ```
-Singularity> Singularity> sudo apt-get update && apt-get -y install fortune cowsay lolcat
+Singularity> sudo apt-get update
 bash: sudo: command not found
 ```
 
@@ -102,7 +102,9 @@ Now we are the root user inside the container. Note also the addition of the `--
 Let's try installing our software again.
 
 ```
-Singularity> apt-get update && apt-get -y install fortune cowsay lolcat
+Singularity> apt-get update
+
+Singularity> apt-get install -y fortune cowsay lolcat
 ```
 
 Now you should see the programs successfully installed.  Let's try running the demo in this new container.
@@ -147,9 +149,9 @@ If  you receive warnings from the Perl language about the `locale` being incorre
 
 We changed our path in this session, but those changes will disappear as soon as we exit the container just like they will when you exit any other shell.  To make the changes permanent we should add them to the definition file and re-bootstrap the container.  We'll do that in a minute.
 
-## Building the final production-grade SIF file
-
 ---
+
+## Building the final production-grade SIF file
 
 Although it is fine to shell into your Singularity container and make changes while you are debugging, you ultimately want all of these changes to be reflected in your definition file.  Otherwise if you need to reproduce it from scratch you will forget all of the changes you made. You will also want to rebuild you container into something more durable, portable, and robust than a directory.  
 

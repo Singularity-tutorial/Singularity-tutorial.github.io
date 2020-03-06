@@ -6,7 +6,7 @@ We've spent a lot of time on building and using your own containers so that you 
 
 ## Tags and hashes
 
-First, Docker Hub and the container library both have a concept of a tagged image. Tags make it convenient for developers to release several different versions of the same container. For instance, if you wanted to specify that you need Debian version 9, you could do so like this:
+First, Docker Hub and the Container Library both have a concept of a tagged image. Tags make it convenient for developers to release several different versions of the same container. For instance, if you wanted to specify that you need Debian version 9, you could do so like this:
 
 ```
 $ singularity pull library://debian:9
@@ -25,7 +25,13 @@ There is a _special_ tag in both the Singularity Library and Docker Hub called *
 Tags are not immutable and may change without warning. For insance, the latest tag is automatically assigned to the latest build of a container in Docker Hub. So pulling by tag (or pulling `latest` by default) can result in your pulling 2 different images with the same command. If you are interested in pulling the same container multiple times, you should pull by the hash. Continuing with our Debian 9 example, this will ensure that you get the same one even if the developers change that tag:
 
 ```
-$ singularity pull debian:sha256.b92c7fdfcc6152b983deb9fde5a2d1083183998c11fb3ff3b89c0efc7b240448
+$ singularity pull library://debian:sha256.b92c7fdfcc6152b983deb9fde5a2d1083183998c11fb3ff3b89c0efc7b240448
+```
+
+The syntax to do the same from Docker Hub is a bit different:
+
+```
+$ singularity pull docker://debian@sha256:f17410575376cc2ad0f6f172699ee825a51588f54f6d72bbfeef6e2fa9a57e2f
 ```
 
 ## Default entities and collections

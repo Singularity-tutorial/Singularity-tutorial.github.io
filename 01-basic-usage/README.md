@@ -12,7 +12,7 @@ In this class, we'll be using containers from:
 There are lots of other places to find pre-build containers too. Here are some of the more popular ones:
 
 - [Singularity Hub](https://singularity-hub.org/), an early collaboration between Stanford University and the Singularity community
-- [Quay.io](quay.io), developed and maintained by Red Hat
+- [Quay.io](https://quay.io/), developed and maintained by Red Hat
 - [NGC](https://ngc.nvidia.com/catalog/all?orderBy=modifiedDESC&pageNumber=3&query=&quickFilter=&filters=), developed and maintained by NVIDIA
 - [BioContainers](https://biocontainers.pro/#/registry), develped and maintained by the Bioconda group
 - Cloud providers like Amazon AWS, Microsoft Azure, and Google cloud also have container registries that can work with Singularity
@@ -22,6 +22,8 @@ There are lots of other places to find pre-build containers too. Here are some o
 In the last section, we validated our Singularity installation by "running" a container from the Container Library. Let's download that container using the `pull` command.
 
 ```
+$ cd ~
+
 $ singularity pull library://godlovedc/funny/lolcow
 ```
 
