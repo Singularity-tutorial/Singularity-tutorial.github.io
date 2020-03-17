@@ -44,7 +44,7 @@ $ echo 'I am your father' > /data/vader.txt
 Now let's see how bind mounts work.  First, let's list the contents of `/data` within the container without bind mounting `/data` on the host system to it.
 
 ```
-$ $ singularity exec lolcow.sif ls -l /data
+$ singularity exec lolcow.sif ls -l /data
 ls: cannot access '/data': No such file or directory
 ```
 

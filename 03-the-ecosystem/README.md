@@ -90,9 +90,9 @@ The last point is particularly important and can be accomplished in a few differ
 
 ### Docker Hub Official and Certified images
 
-The Docker team works with upstream maintainers (like Canonical, CentOS, etc.) to create **Official** images. They've been reviewed by humans, scanned for vulnerabilities, and approved.  You can find more details [here](https://docs.docker.com/docker-hub/official_images/)  
+The Docker team works with upstream maintainers (like Canonical, CentOS, etc.) to create [**Official** images](https://docs.docker.com/docker-hub/official_images/). They've been reviewed by humans, scanned for vulnerabilities, and approved. 
 
-There are a series of steps that upstream maintainers can perform to produce **Certified** images.  This includes a standard of best practices and some baseline testing.  You can find more details [here](https://docs.docker.com/docker-hub/publish/certify-images/)
+There are a series of steps that upstream maintainers can perform to produce [**Certified** images](https://docs.docker.com/docker-hub/publish/certify-images/).  This includes a standard of best practices and some baseline testing. 
 
 ### Signing and verifying Singularity images
 
@@ -102,7 +102,7 @@ This model also differs from the Docker model of trust because the decision of w
 
 ## Building and hosting your containers
 
-Docker Hub allows you to save a Docker File (Docker's version of a Singularity definition file) to a GitHub repo and then link that repo to a Docker Hub repo. Every time a new commit is pushed to the GitHub repo, a new container will be build on Docker Hub.
+Docker Hub allows you to save a Docker File (Docker's version of a Singularity definition file) to a GitHub repo and then link that repo to a Docker Hub repo. Every time a new commit is pushed to the GitHub repo, a new container will be built on Docker Hub.
 
 For instance, the [godlovedc/lolcow](https://hub.docker.com/repository/docker/godlovedc/lolcow) container is linked to the [GodloveD/lolcow](https://github.com/GodloveD/lolcow/blob/master/Dockerfile) repo on GitHub.  
 
