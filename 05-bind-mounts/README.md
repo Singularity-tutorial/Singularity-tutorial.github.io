@@ -1,4 +1,4 @@
-# Bind mounting host system directories into a container
+# Accessing Host Files with Bind Mounts
 
 It's possible to create and modify files on the host system from within the container. In fact, that's exactly what we did in the previous example when we created output files in our home directory.  
 

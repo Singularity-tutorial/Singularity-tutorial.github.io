@@ -1,4 +1,4 @@
-# The Runscript: Making containerized apps behave like normal apps
+# The Runscript: Making Containerized Apps Behave Like Normal Apps
 
 Consider an application that takes one file as input, analyzes the data in the file, and produces another file as output. This is obviously a very common situation.
 

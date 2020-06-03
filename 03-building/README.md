@@ -1,4 +1,4 @@
-# Building a basic container
+# Building a Basic Container
 
 In this section, we will build a brand new container similar to the lolcow container we've been using in the previous examples.
 
