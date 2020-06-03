@@ -1,3 +1,6 @@
+<- [previous](/06-runscript) - [home](https://singularity-tutorial.github.io/) - [next](/08-misc) ->
+
+---
 # Faking a Native Installation within a Singularity Container
 
 How would you like to install an app with one more more commands inside of a Singularity container and then just forget it's in a container and use it like any other app?  
@@ -143,3 +146,4 @@ $ fortune | cowsay -n | lolcat
 If you have too much time on your hands, you might try linking things like `sh`, `bash`, `ls`, or `cd` to the container wrapper script. But otherwise **don't**... because it will cause you a lot of trouble. :-)  
 
 ---
+<- [previous](/06-runscript) - [home](https://singularity-tutorial.github.io/) - [next](/08-misc) ->

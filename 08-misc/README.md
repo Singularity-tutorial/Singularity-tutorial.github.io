@@ -1,3 +1,6 @@
+<- [previous](/07-fake-installation) - [home](https://singularity-tutorial.github.io/)
+
+---
 # Miscellaneous Topics and FAQs
 
 ## X11 and OpenGL
@@ -143,3 +146,6 @@ When finished, don't forget to stop all running instances like so:
 ```
 $ sudo singularity instance.stop --all
 ```
+
+---
+<- [previous](/07-fake-installation) - [home](https://singularity-tutorial.github.io/)

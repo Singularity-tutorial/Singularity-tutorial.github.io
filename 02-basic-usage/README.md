@@ -1,3 +1,6 @@
+<- [previous](/01-installation) - [home](https://singularity-tutorial.github.io/) - [next](/03-building) ->
+
+---
 # Downloading and Interacting with Containers
 
 This section will be useful for container consumers. (i.e. those who really just want to use containers somebody else built.) The next chapter will explore topics more geared toward container producers (i.e. those who want/need to build containers from scratch).  
@@ -264,3 +267,6 @@ $ singularity exec lolcow_latest.sif sh -c "fortune | cowsay | lolcat"
 The above invokes a new shell, but inside the container, and tells it to run the single command line `fortune | cowsay | lolcat`.
 
 That covers the basics on how to download and use pre-built containers!  In the next section we'll start learning how to build your own containers.
+
+---
+<- [previous](/01-installation) - [home](https://singularity-tutorial.github.io/) - [next](/03-building) ->

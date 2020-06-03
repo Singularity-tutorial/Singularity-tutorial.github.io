@@ -1,3 +1,6 @@
+<- [previous](/) - [home](https://singularity-tutorial.github.io/) - [next](/01-installation) ->
+
+---
 # Introduction
 
 ## What IS a software container anyway? (And what's it good for?)
@@ -87,3 +90,6 @@ Singularity assumes that you will have a build system where you are the root use
 - Under active development (must keep up with new changes) 
 
 Singularity shines for scientific software running in an HPC environent.  We will use it for the remainder of the class.
+
+---
+<- [previous](/) - [home](https://singularity-tutorial.github.io/) - [next](/01-installation) ->

@@ -1,3 +1,6 @@
+<- [previous](/04-the-ecosystem) - [home](https://singularity-tutorial.github.io/) - [next](/06-runscript) ->
+
+---
 # Accessing Host Files with Bind Mounts
 
 It's possible to create and modify files on the host system from within the container. In fact, that's exactly what we did in the previous example when we created output files in our home directory.  
@@ -71,3 +74,6 @@ $ export SINGULARITY_BINDPATH=src1:dest1,src2:dest2,src3:dest3
 ```
 
 For a lot more info on how to bind mount host directories to your container, check out the [NIH HPC Binding external directories](https://hpc.nih.gov/apps/singularity.html#bind) section.
+
+---
+<- [previous](/04-the-ecosystem) - [home](https://singularity-tutorial.github.io/) - [next](/06-runscript) ->

@@ -1,3 +1,6 @@
+[home](https://singularity-tutorial.github.io/) - [next](/00-introduction) ->
+
+---
 # <b>Creating and running software containers with Singularity</b>
 
 ### <i>How to use [Singularity](https://sylabs.io/guides/latest/user-guide/)! </i>
@@ -24,3 +27,6 @@ This is an introductory workshop on Singularity. It was originally taught by [Da
 - [The Runscript: Making Containerized Apps Behave Like Normal Apps](/06-runscript)
 - [Faking a Native Installation within a Singularity Container](/07-fake-installation)
 - [Miscellaneous Topics and FAQs](/08-misc)
+
+---
+[home](https://singularity-tutorial.github.io/) - [next](/00-introduction) ->
