@@ -1,3 +1,6 @@
+<- [previous](/03-building) - [home](https://singularity-tutorial.github.io/) - [next](/05-bind-mounts) ->
+
+---
 # The Singularity Ecosystem
 
 We've spent a lot of time on building and using your own containers so that you understand how Singularity works. Now let's talk more about the [Singularity Container Services](https://cloud.sylabs.io/home) and [Docker Hub](https://hub.docker.com/).  
@@ -228,3 +231,6 @@ INFO:    Container verified: alpine.sif
 Anyone can sign a container. So just because a container is signed, does not mean it should be trusted. Users must obtain the fingerprint associated with a given maintainer's key and compare it with that displayed by the `verify` command to ensure that the container is authentic. After that it is up to the user to decide if they trust the maintainer.  
 
 ---
+
+---
+<- [previous](/03-building) - [home](https://singularity-tutorial.github.io/) - [next](/05-bind-mounts) ->

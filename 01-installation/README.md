@@ -1,3 +1,6 @@
+<- [previous](/00-introduction) - [home](https://singularity-tutorial.github.io/) - [next](/02-basic-usage) ->
+
+---
 # Installing Singularity
 Here we will install the latest tagged release from [GitHub](https://github.com/sylabs/singularity/releases). If you prefer to install a different version or to install Singularity in a different location, see these [Singularity docs](https://sylabs.io/guides/3.5/admin-guide/installation.html).
 
@@ -92,4 +95,7 @@ Your cow will likely say something different (and be more colorful), but as long
 
 This command downloads and "runs" a container from [Singularity Container Library](https://cloud.sylabs.io/library). (We'll be talking more about what it means to "run" a container later on in the class.) 
 
-In a following exercise, we will learn how to build a similar container from scratch. But right now, we are going to use this container to execute a bunch of basic commands and just get a feel for what it's like to use Singularity.  
+In a following exercise, we will learn how to build a similar container from scratch. But right now, we are going to use this container to execute a bunch of basic commands and just get a feel for what it's like to use Singularity.
+
+---
+<- [previous](/00-introduction) - [home](https://singularity-tutorial.github.io/) - [next](/02-basic-usage) ->

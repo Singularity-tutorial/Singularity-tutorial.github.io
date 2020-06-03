@@ -1,3 +1,7 @@
+
+<- [previous](/02-basic-usage) - [home](https://singularity-tutorial.github.io/) - [next](/04-the-ecosystem) ->
+
+---
 # Building a Basic Container
 
 In this section, we will build a brand new container similar to the lolcow container we've been using in the previous examples.
@@ -296,3 +300,6 @@ $ singularity build --fakeroot container.sif container.def
 Doing so allows you to pretend to be the root user inside of your container without actually granting singularity elevated privileges on host system.  This is a much safer way to build and interact with your container, and it is going to become more prevalent (eventually probably even default) as more distributions ship with user namespaces enabled. For instance, this feature is enabled by default in RHEL 8.  
 
 For more about the `--fakeroot` option, see [the Singularity documentation](https://sylabs.io/guides/3.5/user-guide/fakeroot.html?highlight=fakeroot).
+
+---
+<- [previous](/02-basic-usage) - [home](https://singularity-tutorial.github.io/) - [next](/04-the-ecosystem) ->
