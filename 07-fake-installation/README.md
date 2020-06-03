@@ -1,4 +1,4 @@
-# Faking a native app installation within a Singularity container
+# Faking a Native Installation within a Singularity Container
 
 How would you like to install an app with one more more commands inside of a Singularity container and then just forget it's in a container and use it like any other app?  
 

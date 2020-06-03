@@ -1,4 +1,4 @@
-# The Singularity ecosystem
+# The Singularity Ecosystem
 
 We've spent a lot of time on building and using your own containers so that you understand how Singularity works. Now let's talk more about the [Singularity Container Services](https://cloud.sylabs.io/home) and [Docker Hub](https://hub.docker.com/).  
 

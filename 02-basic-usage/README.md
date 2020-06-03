@@ -1,4 +1,4 @@
-# Downloading and interacting with containers
+# Downloading and Interacting with Containers
 
 This section will be useful for container consumers. (i.e. those who really just want to use containers somebody else built.) The next chapter will explore topics more geared toward container producers (i.e. those who want/need to build containers from scratch).  
 
